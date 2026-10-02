@@ -6,35 +6,2673 @@
   <title>CampusConnect — Find products at campus shops before you go</title>
   <meta name="description" content="Search for any product or service and instantly see which campus shops have it, compare prices, and check availability.">
   <meta name="theme-color" content="#0f172a">
-
-  <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
-
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+/* ============================================================
+   CampusConnect — Design System
+   Palette: Deep navy base, indigo accent, clean white cards
+   Type: Inter (system) for UI, good hierarchy
+   ============================================================ */
 
-  <!-- App CSS -->
-  <link rel="stylesheet" href="css/style.css">
+/* ── Reset & Base ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:   #0f172a;
+  --navy2:  #1e293b;
+  --navy3:  #334155;
+  --slate:  #475569;
+  --muted:  #94a3b8;
+  --border: #e2e8f0;
+  --bg:     #f8fafc;
+  --white:  #ffffff;
+
+  --indigo: #4f46e5;
+  --indigo2:#6366f1;
+  --indigo-l:#eef2ff;
+  --green:  #059669;
+  --red:    #dc2626;
+  --amber:  #d97706;
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06);
+  --shadow-md: 0 4px 24px rgba(0,0,0,.12);
+
+  --font: 'Inter', system-ui, -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--navy);
+  line-height: 1.6;
+  font-size: 15px;
+  min-height: 100vh;
+}
+
+a { color: var(--indigo); text-decoration: none; }
+a:hover { text-decoration: underline; }
+img { max-width: 100%; }
+button { cursor: pointer; font-family: var(--font); }
+input, textarea, select {
+  font-family: var(--font);
+  font-size: 14px;
+}
+
+/* ── Layout ─────────────────────────────────────────────────── */
+.page-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem;
+}
+
+/* ── Navbar ─────────────────────────────────────────────────── */
+#navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--navy);
+  border-bottom: 1px solid var(--navy3);
+}
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: .75rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  color: var(--white);
+  font-weight: 700;
+  font-size: 1.15rem;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.brand-icon { font-size: 1.4rem; }
+.brand-text { color: var(--white); }
+.brand-text span { color: var(--indigo2); }
+
+.nav-search-wrap { flex: 1; max-width: 400px; }
+.nav-search-form {
+  display: flex;
+  background: var(--navy2);
+  border-radius: 8px;
+  border: 1px solid var(--navy3);
+  overflow: hidden;
+}
+.nav-search-form input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: .5rem .75rem;
+  color: var(--white);
+  font-size: 13px;
+}
+.nav-search-form input::placeholder { color: var(--muted); }
+.nav-search-form button {
+  background: none;
+  border: none;
+  padding: .5rem .75rem;
+  color: var(--muted);
+  font-size: 1rem;
+}
+.nav-search-form button:hover { color: var(--white); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex-shrink: 0;
+}
+.nav-links a {
+  color: var(--muted);
+  font-size: 14px;
+  padding: .4rem .6rem;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: color .15s;
+}
+.nav-links a:hover,
+.nav-links a.active { color: var(--white); }
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 1.4rem;
+  margin-left: auto;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .55rem 1.1rem;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  transition: all .15s;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn-primary {
+  background: var(--indigo);
+  color: #fff;
+}
+.btn-primary:hover { background: var(--indigo2); color:#fff; text-decoration:none; }
+.btn-ghost {
+  background: transparent;
+  color: var(--indigo);
+  border: 1.5px solid var(--indigo);
+}
+.btn-ghost:hover { background: var(--indigo-l); }
+.btn-ghost-light {
+  background: rgba(255,255,255,.1);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.2);
+}
+.btn-ghost-light:hover { background: rgba(255,255,255,.18); }
+.btn-danger { background: #fee2e2; color: var(--red); }
+.btn-danger:hover { background: #fecaca; }
+.btn-fav-active { background: #fce7f3; color: #be185d; border: 1.5px solid #be185d; }
+.btn-sm  { padding: .35rem .7rem; font-size: 13px; }
+.btn-xs  { padding: .2rem .5rem; font-size: 12px; }
+.btn-full { width: 100%; justify-content: center; }
+
+/* ── Toast ───────────────────────────────────────────────────── */
+#toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+.toast {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  background: var(--navy);
+  color: #fff;
+  padding: .7rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  transform: translateX(1rem);
+  transition: all .25s;
+  min-width: 220px;
+}
+.toast.show { opacity:1; transform:translateX(0); }
+.toast-success span { color: #4ade80; }
+.toast-error span { color: #f87171; }
+.toast-info span { color: #60a5fa; }
+
+/* ── Modal ───────────────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  transition: opacity .25s;
+}
+.modal-overlay.open { opacity: 1; }
+.modal-box {
+  background: var(--white);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-md);
+  transform: scale(.95);
+  transition: transform .25s;
+}
+.modal-overlay.open .modal-box { transform: scale(1); }
+.modal-wide { max-width: 680px; }
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.modal-title { font-size: 1.05rem; font-weight: 600; }
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  color: var(--slate);
+  line-height: 1;
+}
+.modal-body { padding: 1.5rem; }
+.modal-foot {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: .75rem;
+  justify-content: flex-end;
+}
+
+/* ── Hero ────────────────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(135deg, var(--navy) 0%, #1a0533 100%);
+  color: #fff;
+  padding: 4rem 1.25rem 3.5rem;
+}
+.hero-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+.hero-tag {
+  display: inline-block;
+  background: rgba(99,102,241,.25);
+  color: #a5b4fc;
+  font-size: 13px;
+  font-weight: 500;
+  padding: .3rem .8rem;
+  border-radius: 100px;
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(99,102,241,.4);
+}
+.hero-title {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -.02em;
+  margin-bottom: 1rem;
+}
+.hero-title em { font-style: normal; color: #a5b4fc; }
+.hero-sub {
+  color: #94a3b8;
+  font-size: 1.05rem;
+  margin-bottom: 2rem;
+  max-width: 560px;
+  margin-inline: auto;
+}
+.hero-search {
+  display: flex;
+  max-width: 540px;
+  margin: 0 auto 1.25rem;
+  background: var(--white);
+  border-radius: 50px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,.25);
+}
+.hero-search input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: .9rem 1.4rem;
+  font-size: 15px;
+  color: var(--navy);
+}
+.hero-search button {
+  background: var(--indigo);
+  color: #fff;
+  border: none;
+  padding: .9rem 1.5rem;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 0 50px 50px 0;
+  transition: background .15s;
+}
+.hero-search button:hover { background: var(--indigo2); }
+.hero-examples {
+  color: #64748b;
+  font-size: 13px;
+}
+.hero-examples span {
+  display: inline-block;
+  background: rgba(255,255,255,.08);
+  color: #94a3b8;
+  border: 1px solid rgba(255,255,255,.12);
+  padding: .2rem .6rem;
+  border-radius: 100px;
+  margin: .25rem .2rem;
+  cursor: pointer;
+  transition: all .15s;
+  font-size: 12px;
+}
+.hero-examples span:hover { background: rgba(99,102,241,.3); color: #c7d2fe; border-color: #6366f1; }
+
+/* ── Section Headers ─────────────────────────────────────────── */
+.section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+.section-link {
+  font-size: 13px;
+  color: var(--indigo);
+  font-weight: 500;
+}
+
+/* ── Category Grid ───────────────────────────────────────────── */
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: .75rem;
+  margin-bottom: 2.5rem;
+}
+.cat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.1rem .75rem;
+  cursor: pointer;
+  transition: all .2s;
+  text-align: center;
+}
+.cat-card:hover {
+  border-color: var(--cat-color, var(--indigo));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--cat-color, var(--indigo)) 15%, transparent);
+  transform: translateY(-2px);
+}
+.cat-icon { font-size: 1.75rem; }
+.cat-name { font-size: 11.5px; font-weight: 600; color: var(--slate); line-height: 1.3; }
+
+/* ── Shop Grid ───────────────────────────────────────────────── */
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+.shop-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all .2s;
+  box-shadow: var(--shadow);
+}
+.shop-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: #c7d2fe; }
+.shop-card-banner {
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.shop-emoji { font-size: 2.5rem; }
+.fav-btn {
+  position: absolute;
+  top: .6rem;
+  right: .6rem;
+  background: rgba(255,255,255,.15);
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: .9rem;
+  color: rgba(255,255,255,.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .15s;
+}
+.fav-btn:hover, .fav-btn.fav-active { background: #fce7f3; color: #be185d; }
+.shop-card-body { padding: .9rem 1rem 1rem; }
+.shop-card-cat { font-size: 11px; font-weight: 600; color: var(--indigo); text-transform: uppercase; letter-spacing: .05em; margin-bottom: .3rem; }
+.shop-card-name { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: .2rem; }
+.shop-card-tagline { font-size: 12.5px; color: var(--slate); margin-bottom: .6rem; }
+.shop-card-meta { font-size: 12.5px; color: var(--slate); display: flex; align-items: center; gap: .3rem; flex-wrap: wrap; }
+.shop-rating-num { font-weight: 600; color: var(--amber); }
+.dot { color: var(--muted); }
+.shop-card-address { font-size: 12px; color: var(--muted); margin-top: .5rem; }
+
+/* ── Product Grid ────────────────────────────────────────────── */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+.product-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all .2s;
+  box-shadow: var(--shadow);
+}
+.product-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: #c7d2fe; }
+.product-card-top {
+  background: var(--bg);
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.product-emoji { font-size: 2.2rem; }
+.product-card-body { padding: .75rem .9rem .9rem; }
+.product-cat-badge {
+  display: inline-block;
+  background: var(--indigo-l);
+  color: var(--indigo);
+  font-size: 10px;
+  font-weight: 600;
+  padding: .15rem .45rem;
+  border-radius: 100px;
+  margin-bottom: .3rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.product-name { font-size: .9rem; font-weight: 700; color: var(--navy); margin-bottom: .25rem; line-height: 1.3; }
+.product-desc { font-size: 12px; color: var(--slate); margin-bottom: .5rem; line-height: 1.4; }
+.product-price-row { margin-bottom: .4rem; display: flex; align-items: baseline; gap: .4rem; flex-wrap: wrap; }
+.price-final { font-size: 1rem; font-weight: 700; color: var(--navy); }
+.price-orig  { font-size: .8rem; color: var(--muted); text-decoration: line-through; }
+.badge-discount { font-size: 10px; background: #d1fae5; color: #065f46; padding: .1rem .35rem; border-radius: 100px; font-weight: 600; }
+.unit { font-size: 11px; color: var(--muted); }
+.product-shop-name { font-size: 11px; color: var(--muted); margin-top: .4rem; }
+.avail-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: .2rem .5rem;
+  border-radius: 100px;
+}
+
+/* ── Stars ───────────────────────────────────────────────────── */
+.stars { color: var(--amber); font-size: .85rem; letter-spacing: 1px; }
+
+/* ── Empty / Loading ─────────────────────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--slate);
+}
+.empty-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+.empty-state h3 { font-size: 1.1rem; margin-bottom: .5rem; color: var(--navy); }
+.empty-state p { font-size: 14px; }
+.loading-state { text-align:center; padding:3rem; color:var(--muted); }
+.spinner {
+  width: 32px; height: 32px;
+  border: 3px solid var(--border);
+  border-top-color: var(--indigo);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  margin: 0 auto 1rem;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Search Page ─────────────────────────────────────────────── */
+.search-header { margin-bottom: 1.25rem; }
+.search-title { font-size: 1.4rem; font-weight: 800; }
+.search-count { font-size: 13px; color: var(--muted); }
+.search-bar-wrap { margin-bottom: 1.25rem; }
+.search-bar-form {
+  display: flex;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 50px;
+  overflow: hidden;
+  max-width: 600px;
+}
+.search-bar-form input {
+  flex:1; border:none; outline:none;
+  padding: .7rem 1.25rem;
+  font-size: 15px;
+}
+.search-bar-form button {
+  background: var(--indigo);
+  color: #fff;
+  border: none;
+  padding: .7rem 1.25rem;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 0 50px 50px 0;
+}
+.search-cats-scroll {
+  display: flex;
+  gap: .5rem;
+  overflow-x: auto;
+  padding-bottom: .5rem;
+  margin-bottom: 1.25rem;
+  scrollbar-width: none;
+}
+.search-cats-scroll::-webkit-scrollbar { display: none; }
+.cat-pill {
+  flex-shrink: 0;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 100px;
+  padding: .35rem .9rem;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+  color: var(--slate);
+}
+.cat-pill.active, .cat-pill:hover {
+  background: var(--indigo);
+  border-color: var(--indigo);
+  color: #fff;
+}
+.compare-tip {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: var(--radius-sm);
+  padding: .75rem 1rem;
+  font-size: 13.5px;
+  color: #1d4ed8;
+  margin-bottom: 1.25rem;
+}
+.search-layout {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+.search-filters {
+  flex-shrink: 0;
+  width: 200px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  position: sticky;
+  top: 72px;
+}
+.search-filters h3 { font-size: .9rem; font-weight: 700; margin-bottom: 1rem; }
+.search-filters label { display: block; font-size: 12px; font-weight: 600; color: var(--slate); text-transform: uppercase; letter-spacing: .05em; margin-bottom: .3rem; margin-top: .75rem; }
+.search-filters select {
+  width: 100%;
+  padding: .4rem .6rem;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  outline: none;
+  font-size: 13px;
+}
+.search-results { flex: 1; min-width: 0; }
+.results-section-title { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 1rem; }
+
+/* ── Shop Page ───────────────────────────────────────────────── */
+.shop-hero { padding: 2.5rem 1.25rem; }
+.shop-hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+.shop-avatar { font-size: 3.5rem; flex-shrink: 0; }
+.shop-hero-info { flex: 1; }
+.shop-hero-cat { font-size: 12px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: .08em; margin-bottom: .35rem; }
+.shop-hero-name { font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: .3rem; letter-spacing: -.02em; }
+.shop-hero-tagline { color: #94a3b8; font-size: .95rem; margin-bottom: .75rem; }
+.shop-hero-meta { font-size: 13.5px; color: #94a3b8; display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.shop-hero-meta a { color: #94a3b8; }
+.shop-hero-actions { display: flex; gap: .5rem; flex-wrap: wrap; }
+.shop-page { padding-top: 1.5rem; }
+.shop-info-bar {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: .75rem;
+  margin-bottom: 1.5rem;
+}
+.shop-info-item { font-size: 13.5px; color: var(--slate); }
+.shop-info-item strong { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin-bottom: .15rem; }
+.shop-tabs {
+  display: flex;
+  gap: .25rem;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+}
+.shop-tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: .6rem 1rem;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--slate);
+  cursor: pointer;
+  margin-bottom: -2px;
+  white-space: nowrap;
+  transition: all .15s;
+}
+.shop-tab.active { color: var(--indigo); border-bottom-color: var(--indigo); }
+.shop-tab:hover { color: var(--navy); }
+
+/* ── Reviews ─────────────────────────────────────────────────── */
+.review-form-box {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.review-form-box h3 { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; }
+.star-picker { display: flex; gap: .25rem; margin-bottom: .75rem; cursor: pointer; }
+.star-pick { font-size: 1.8rem; color: var(--muted); transition: color .1s; }
+.star-pick:hover, .star-pick.star-picked { color: var(--amber); }
+#review-text {
+  width: 100%;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: .6rem .8rem;
+  resize: vertical;
+  min-height: 80px;
+  margin-bottom: .75rem;
+  outline: none;
+  font-size: 14px;
+}
+#review-text:focus { border-color: var(--indigo); }
+.review-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin-bottom: .75rem;
+}
+.review-header { display: flex; align-items: flex-start; gap: .75rem; margin-bottom: .5rem; }
+.review-avatar {
+  width: 36px; height: 36px;
+  background: var(--indigo);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: .9rem;
+  flex-shrink: 0;
+}
+.review-name { font-weight: 600; font-size: 14px; }
+.review-date { font-size: 12px; color: var(--muted); margin-left: auto; }
+.review-text { font-size: 14px; color: var(--slate); line-height: 1.5; }
+
+/* ── Product Detail ──────────────────────────────────────────── */
+.product-page { padding-top: 1.5rem; }
+.breadcrumb { font-size: 13px; color: var(--muted); margin-bottom: 1.25rem; }
+.breadcrumb a { color: var(--slate); }
+.product-detail-card {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 2rem;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow);
+}
+.product-detail-media {
+  background: var(--bg);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 220px;
+  font-size: 5rem;
+  position: relative;
+}
+.product-discount-badge {
+  position: absolute;
+  top: .75rem;
+  right: .75rem;
+  background: var(--green);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: .2rem .5rem;
+  border-radius: 100px;
+}
+.product-detail-name { font-size: 1.5rem; font-weight: 800; margin: .5rem 0; letter-spacing: -.02em; }
+.product-detail-desc { color: var(--slate); font-size: 14.5px; line-height: 1.6; margin-bottom: .75rem; }
+.product-detail-price { display: flex; align-items: baseline; gap: .5rem; flex-wrap: wrap; margin-bottom: .5rem; }
+.product-detail-price .price-final { font-size: 1.6rem; }
+.product-detail-shop {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: .75rem 1rem;
+  cursor: pointer;
+  margin: 1rem 0;
+  transition: border-color .15s;
+}
+.product-detail-shop:hover { border-color: var(--indigo); }
+.shop-mini-icon { font-size: 1.5rem; }
+.shop-mini-name { font-size: 14px; font-weight: 700; }
+.shop-mini-meta { font-size: 12px; color: var(--muted); }
+.product-detail-shop .arrow { margin-left: auto; color: var(--muted); font-size: 1.2rem; }
+.product-detail-actions { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: 1rem; }
+.product-updated { font-size: 11px; color: var(--muted); margin-top: .5rem; }
+.similar-table { overflow-x: auto; margin-bottom: 2rem; }
+.similar-table table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.similar-table th { background: var(--bg); padding: .6rem 1rem; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); border-bottom: 1px solid var(--border); }
+.similar-table td { padding: .75rem 1rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+
+/* ── Compare Page ────────────────────────────────────────────── */
+.compare-group {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.compare-group-title {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+.compare-emoji { font-size: 1.75rem; }
+.compare-group-title h2 { font-size: 1.05rem; font-weight: 700; }
+.compare-count { font-size: 12px; background: var(--indigo-l); color: var(--indigo); padding: .15rem .45rem; border-radius: 100px; font-weight: 600; margin-left: auto; }
+.compare-table-wrap { overflow-x: auto; }
+.compare-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.compare-table th { background: var(--bg); padding: .65rem 1rem; text-align: left; font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); border-bottom: 1px solid var(--border); }
+.compare-table td { padding: .85rem 1rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.compare-table tbody tr:last-child td { border-bottom: none; }
+.compare-best { background: #f0fdf4; }
+.compare-best .compare-shop-name { color: var(--green); }
+.compare-price .price-final { font-size: 1rem; }
+.compare-shop-addr { font-size: 12px; color: var(--muted); }
+.best-badge { display: inline-block; background: #d1fae5; color: #065f46; font-size: 10px; font-weight: 700; padding: .1rem .4rem; border-radius: 100px; margin-left: .3rem; vertical-align: middle; }
+
+/* ── Auth ────────────────────────────────────────────────────── */
+.auth-wrap {
+  min-height: calc(100vh - 60px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+.auth-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: var(--shadow);
+}
+.auth-logo { font-size: 2.5rem; margin-bottom: .75rem; }
+.auth-title { font-size: 1.4rem; font-weight: 800; margin-bottom: .35rem; letter-spacing: -.02em; }
+.auth-sub { color: var(--slate); font-size: 14px; margin-bottom: 1.5rem; }
+.auth-switch { margin-top: 1rem; font-size: 13.5px; color: var(--slate); text-align: center; }
+.auth-role-tabs { margin-bottom: 1.5rem; }
+.demo-creds {
+  margin-top: 1.25rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+}
+.demo-creds h4 { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: .5rem; }
+.demo-creds-grid { display: grid; gap: .3rem; }
+.demo-creds-grid div { font-size: 12.5px; color: var(--slate); }
+
+/* ── Forms ───────────────────────────────────────────────────── */
+.field { margin-bottom: 1rem; }
+.field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--slate);
+  margin-bottom: .35rem;
+}
+.field input, .field select, .field textarea {
+  width: 100%;
+  padding: .6rem .85rem;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color .15s;
+  background: var(--white);
+  color: var(--navy);
+}
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--indigo); }
+.field textarea { resize: vertical; min-height: 80px; }
+
+/* ── Dashboard ───────────────────────────────────────────────── */
+.dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.dash-status { font-size: 13.5px; color: var(--slate); margin-top: .25rem; }
+.status-badge {
+  display: inline-block;
+  padding: .15rem .5rem;
+  border-radius: 100px;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.status-approved { background: #d1fae5; color: #065f46; }
+.status-pending  { background: #fef3c7; color: #92400e; }
+.status-rejected { background: #fee2e2; color: #991b1b; }
+.dash-product-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.dash-product-header h2 { font-size: 1rem; font-weight: 700; }
+.dash-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.dash-table th {
+  background: var(--bg);
+  padding: .65rem 1rem;
+  text-align: left;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+.dash-table td {
+  padding: .85rem 1rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.dash-table-wrap, .dash-product-table-wrap { overflow-x: auto; }
+.type-badge {
+  display: inline-block;
+  background: var(--indigo-l);
+  color: var(--indigo);
+  font-size: 11px;
+  font-weight: 600;
+  padding: .1rem .4rem;
+  border-radius: 100px;
+  text-transform: capitalize;
+}
+.action-cell { white-space: nowrap; }
+.action-cell .btn { margin-right: .3rem; }
+.dash-tab-content {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+/* ── Admin Stats ─────────────────────────────────────────────── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: .75rem;
+  margin-bottom: 1.5rem;
+}
+.stat-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  text-align: center;
+}
+.stat-alert { border-color: #fca5a5; background: #fff5f5; }
+.stat-num { font-size: 2rem; font-weight: 800; color: var(--navy); line-height: 1; margin-bottom: .25rem; }
+.stat-alert .stat-num { color: var(--red); }
+.stat-lbl { font-size: 12px; color: var(--muted); font-weight: 500; }
+
+/* ── Page title ──────────────────────────────────────────────── */
+.page-title { font-size: 1.5rem; font-weight: 800; margin-bottom: .25rem; letter-spacing: -.02em; }
+.page-sub { color: var(--slate); font-size: 14.5px; margin-bottom: 1.5rem; }
+
+/* ── Misc ────────────────────────────────────────────────────── */
+.alert { padding: .75rem 1rem; border-radius: 8px; font-size: 13.5px; margin-bottom: 1rem; }
+.alert-info { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+.edit-shop-form { max-width: 560px; }
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .product-detail-card { grid-template-columns: 1fr; }
+  .product-detail-media { height: 160px; }
+  .search-layout { flex-direction: column; }
+  .search-filters { width: 100%; position: static; }
+}
+
+@media (max-width: 768px) {
+  .nav-search-wrap { display: none; }
+  .hamburger { display: flex; }
+  .nav-links {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--navy);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
+    z-index: 99;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { font-size: 1.1rem; color: #fff; }
+  .shop-hero-inner { flex-direction: column; align-items: flex-start; }
+  .shop-avatar { font-size: 2.5rem; }
+  .hero-title { font-size: 1.6rem; }
+  .hero-search { flex-direction: column; border-radius: var(--radius); }
+  .hero-search input { width: 100%; }
+  .hero-search button { border-radius: 0 0 var(--radius) var(--radius); }
+  .cat-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
+  .shop-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  .product-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+}
+
+@media (max-width: 480px) {
+  .page-wrap { padding: 1.5rem .9rem; }
+  .product-grid { grid-template-columns: repeat(2, 1fr); }
+  .shop-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+  </style>
 </head>
 <body>
-
-<!-- Navbar -->
 <header id="navbar"></header>
-
-<!-- Main Content -->
-<main id="main" role="main">
-  <!-- Populated by JS -->
-</main>
-
-<!-- Toast Container -->
+<main id="main" role="main"></main>
 <div id="toast-container" aria-live="polite"></div>
+<script>
+// ============================================================
+// CampusConnect — Data Layer
+// All data is stored in localStorage; demo data is seeded once.
+// ============================================================
 
-<!-- Scripts — order matters -->
-<script src="js/data.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/app.js"></script>
+const CC = (() => {
 
+// ── Keys ────────────────────────────────────────────────────
+const KEYS = {
+  users:    'cc_users',
+  shops:    'cc_shops',
+  products: 'cc_products',
+  reviews:  'cc_reviews',
+  reports:  'cc_reports',
+  session:  'cc_session',
+  favShops: 'cc_fav_shops',
+  favProds: 'cc_fav_products',
+  seeded:   'cc_seeded',
+};
+
+// ── Helpers ──────────────────────────────────────────────────
+const load  = k => JSON.parse(localStorage.getItem(k) || 'null');
+const save  = (k,v) => localStorage.setItem(k, JSON.stringify(v));
+const uid   = () => Math.random().toString(36).slice(2,10);
+const now   = () => new Date().toISOString();
+const clone = x => JSON.parse(JSON.stringify(x));
+
+// ── Seed Data ────────────────────────────────────────────────
+const SEED_USERS = [
+  { id:'u001', role:'admin',    name:'Admin',             email:'admin@campus.edu',        password:'admin123',    avatar:'A', createdAt: now() },
+  { id:'u002', role:'provider', name:'Campus Print Hub',  email:'print@campus.edu',        password:'print123',    avatar:'P', shopId:'s001', createdAt: now() },
+  { id:'u003', role:'provider', name:'Student Corner',    email:'corner@campus.edu',       password:'corner123',   avatar:'S', shopId:'s002', createdAt: now() },
+  { id:'u004', role:'provider', name:'Tech Point',        email:'tech@campus.edu',         password:'tech123',     avatar:'T', shopId:'s003', createdAt: now() },
+  { id:'u005', role:'provider', name:'Campus Cafe',       email:'cafe@campus.edu',         password:'cafe123',     avatar:'C', shopId:'s004', createdAt: now() },
+  { id:'u006', role:'provider', name:'Project Materials', email:'project@campus.edu',      password:'proj123',     avatar:'M', shopId:'s005', createdAt: now() },
+  { id:'u007', role:'provider', name:'College Book House',email:'books@campus.edu',        password:'books123',    avatar:'B', shopId:'s006', createdAt: now() },
+  { id:'u008', role:'student',  name:'Arjun Sharma',      email:'arjun@student.edu',       password:'student123',  avatar:'A', createdAt: now() },
+  { id:'u009', role:'student',  name:'Priya Reddy',       email:'priya@student.edu',       password:'student123',  avatar:'P', createdAt: now() },
+];
+
+const SEED_SHOPS = [
+  {
+    id:'s001', ownerId:'u002', status:'approved',
+    name:'Campus Print Hub',
+    tagline:'Fast prints, perfect binding',
+    category:'Printing & Xerox',
+    description:'Your one-stop printing and binding centre. B/W, colour, scanning, lamination, spiral binding — all under one roof.',
+    address:'Shop 3, Main Gate Complex, College Road',
+    lat:17.385, lng:78.486,
+    phone:'+91 98765 11111',
+    hours:'Mon–Sat 8 AM – 8 PM, Sun 9 AM – 5 PM',
+    rating:4.5, reviewCount:24,
+    image:'🖨️',
+    tags:['printing','xerox','binding','lamination','scanning'],
+    createdAt: now(),
+  },
+  {
+    id:'s002', ownerId:'u003', status:'approved',
+    name:'Student Corner Stationery',
+    tagline:'Everything you need, right here',
+    category:'Stationery',
+    description:'Wide range of stationery, record books, drawing materials, files, and all your college supply needs.',
+    address:'Shop 7, College Gate Market',
+    lat:17.386, lng:78.487,
+    phone:'+91 98765 22222',
+    hours:'Mon–Sat 9 AM – 9 PM',
+    rating:4.2, reviewCount:31,
+    image:'✏️',
+    tags:['stationery','record book','pen','pencil','files'],
+    createdAt: now(),
+  },
+  {
+    id:'s003', ownerId:'u004', status:'approved',
+    name:'Tech Point',
+    tagline:'Gadgets, accessories & repairs',
+    category:'Electronics',
+    description:'Laptops, USB drives, chargers, earphones, calculators, accessories, and repair services for all electronics.',
+    address:'Shop 12, Electronics Row, Near Hostel Gate',
+    lat:17.387, lng:78.485,
+    phone:'+91 98765 33333',
+    hours:'Mon–Sat 10 AM – 8 PM',
+    rating:4.0, reviewCount:18,
+    image:'💻',
+    tags:['electronics','USB','calculator','charger','repair','laptop'],
+    createdAt: now(),
+  },
+  {
+    id:'s004', ownerId:'u005', status:'approved',
+    name:'Campus Cafe',
+    tagline:'Fuel your study sessions',
+    category:'Food & Cafes',
+    description:'Hot and cold beverages, snacks, meals, and fresh juices. Perfect spot to take a break between classes.',
+    address:'Block C, Ground Floor, Near Auditorium',
+    lat:17.384, lng:78.488,
+    phone:'+91 98765 44444',
+    hours:'Mon–Sun 7 AM – 10 PM',
+    rating:4.6, reviewCount:57,
+    image:'☕',
+    tags:['food','cafe','coffee','tea','snacks','meals'],
+    createdAt: now(),
+  },
+  {
+    id:'s005', ownerId:'u006', status:'approved',
+    name:'Project Materials Store',
+    tagline:'All your project needs',
+    category:'Project Materials',
+    description:'Complete range of project materials — chart papers, foam boards, thermocol, paints, craft supplies, and more.',
+    address:'Shop 5, Opposite College Library',
+    lat:17.388, lng:78.486,
+    phone:'+91 98765 55555',
+    hours:'Mon–Sat 9 AM – 7 PM',
+    rating:4.1, reviewCount:12,
+    image:'🎨',
+    tags:['project','chart paper','thermocol','foam board','craft'],
+    createdAt: now(),
+  },
+  {
+    id:'s006', ownerId:'u007', status:'approved',
+    name:'College Book House',
+    tagline:'Textbooks old & new',
+    category:'Books',
+    description:'New and second-hand textbooks, reference books, notebooks, and record books. Best prices guaranteed.',
+    address:'Shop 2, Library Complex, East Wing',
+    lat:17.383, lng:78.489,
+    phone:'+91 98765 66666',
+    hours:'Mon–Sat 9 AM – 6 PM',
+    rating:4.3, reviewCount:22,
+    image:'📚',
+    tags:['books','textbook','notebook','record book','second-hand'],
+    createdAt: now(),
+  },
+];
+
+const SEED_PRODUCTS = [
+  // Campus Print Hub (s001)
+  { id:'p001', shopId:'s001', type:'service', name:'B/W Printing', category:'Printing & Xerox', description:'Black & white laser printing on A4 sheets. Fast turnaround.', price:1, unit:'per page', availability:'available', image:'🖨️', discount:0, tags:['printing','xerox','black white'], updatedAt: now() },
+  { id:'p002', shopId:'s001', type:'service', name:'Colour Printing', category:'Printing & Xerox', description:'High-quality colour printing on A4. Vivid colours, sharp output.', price:5, unit:'per page', availability:'available', image:'🎨', discount:0, tags:['colour printing','color'], updatedAt: now() },
+  { id:'p003', shopId:'s001', type:'service', name:'Spiral Binding', category:'Binding & Lamination', description:'Spiral binding for reports and projects. Up to 200 pages.', price:30, unit:'per bind', availability:'available', image:'📎', discount:0, tags:['binding','spiral','project'], updatedAt: now() },
+  { id:'p004', shopId:'s001', type:'service', name:'Lamination', category:'Binding & Lamination', description:'Matt or gloss lamination for certificates, IDs, and documents.', price:20, unit:'per sheet', availability:'available', image:'✨', discount:0, tags:['lamination','certificate'], updatedAt: now() },
+  { id:'p005', shopId:'s001', type:'service', name:'Scanning', category:'Printing & Xerox', description:'High-resolution scanning to PDF or image. Email delivery available.', price:5, unit:'per page', availability:'available', image:'📄', discount:0, tags:['scanning','scan','pdf'], updatedAt: now() },
+  { id:'p006', shopId:'s001', type:'service', name:'Hard Binding', category:'Binding & Lamination', description:'Hardcover binding for final year projects and thesis.', price:150, unit:'per bind', availability:'available', image:'📗', discount:10, tags:['hard binding','thesis','project'], updatedAt: now() },
+
+  // Student Corner (s002)
+  { id:'p007', shopId:'s002', type:'product', name:'Record Book', category:'Stationery', description:'200-page ruled record book. A4 size, hard cover.', price:45, unit:'each', availability:'available', image:'📓', discount:0, tags:['record book','notebook','stationery'], updatedAt: now() },
+  { id:'p008', shopId:'s002', type:'product', name:'A4 Sheets (500 pack)', category:'Stationery', description:'80 GSM white A4 paper, ream of 500 sheets.', price:280, unit:'ream', availability:'available', image:'📄', discount:5, tags:['a4 sheets','paper','printing'], updatedAt: now() },
+  { id:'p009', shopId:'s002', type:'product', name:'Pen (Blue)', category:'Stationery', description:'Smooth-flow ballpoint pen, blue ink, pack of 10.', price:80, unit:'pack of 10', availability:'available', image:'🖊️', discount:0, tags:['pen','ballpoint','blue'], updatedAt: now() },
+  { id:'p010', shopId:'s002', type:'product', name:'File Folder', category:'Stationery', description:'A4 plastic file folder with document organiser pockets.', price:25, unit:'each', availability:'available', image:'📁', discount:0, tags:['file','folder','organiser'], updatedAt: now() },
+  { id:'p011', shopId:'s002', type:'product', name:'Drawing Sheet', category:'Stationery', description:'A1 white drawing sheet. 120 GSM cartridge paper.', price:5, unit:'each', availability:'available', image:'📐', discount:0, tags:['drawing sheet','chart paper','art'], updatedAt: now() },
+  { id:'p012', shopId:'s002', type:'product', name:'Geometry Box', category:'Stationery', description:'Complete geometry set — compass, protractor, set squares, ruler.', price:85, unit:'each', availability:'low_stock', image:'📏', discount:0, tags:['geometry','compass','ruler'], updatedAt: now() },
+  { id:'p013', shopId:'s002', type:'product', name:'Highlighter Set', category:'Stationery', description:'Pack of 5 colour highlighters — yellow, green, pink, blue, orange.', price:60, unit:'pack', availability:'available', image:'🖍️', discount:0, tags:['highlighter','marker','colour'], updatedAt: now() },
+  { id:'p014', shopId:'s002', type:'product', name:'Spiral Notebook', category:'Stationery', description:'A5 spiral notebook, 200 pages, ruled.', price:50, unit:'each', availability:'available', image:'📔', discount:0, tags:['notebook','spiral','notes'], updatedAt: now() },
+
+  // Tech Point (s003)
+  { id:'p015', shopId:'s003', type:'product', name:'USB Drive 32GB', category:'Electronics', description:'Fast USB 3.0 flash drive, 32GB. Compatible with all systems.', price:350, unit:'each', availability:'available', image:'💾', discount:0, tags:['usb drive','pen drive','flash drive','storage'], updatedAt: now() },
+  { id:'p016', shopId:'s003', type:'product', name:'USB Drive 16GB', category:'Electronics', description:'USB 2.0 flash drive, 16GB. Budget-friendly option.', price:220, unit:'each', availability:'available', image:'💾', discount:0, tags:['usb drive','pen drive','flash drive','storage'], updatedAt: now() },
+  { id:'p017', shopId:'s003', type:'product', name:'Scientific Calculator', category:'Electronics', description:'Casio FX-991EX scientific calculator. Ideal for engineering students.', price:1200, unit:'each', availability:'available', image:'🔢', discount:8, tags:['calculator','scientific','casio','engineering'], updatedAt: now() },
+  { id:'p018', shopId:'s003', type:'product', name:'Laptop Charger (Universal)', category:'Electronics', description:'Universal laptop charger with multiple connector tips. 65W.', price:850, unit:'each', availability:'low_stock', image:'🔌', discount:0, tags:['charger','laptop','adapter'], updatedAt: now() },
+  { id:'p019', shopId:'s003', type:'product', name:'Earphones', category:'Electronics', description:'Wired earphones with mic. 3.5mm jack. Bass-boosted sound.', price:299, unit:'each', availability:'available', image:'🎧', discount:0, tags:['earphones','headphones','audio'], updatedAt: now() },
+  { id:'p020', shopId:'s003', type:'service', name:'Laptop Repair', category:'Repair Services', description:'Hardware and software repair, virus removal, OS installation, screen replacement.', price:200, unit:'starting price', availability:'available', image:'🔧', discount:0, tags:['laptop repair','repair','service','screen'], updatedAt: now() },
+  { id:'p021', shopId:'s003', type:'product', name:'Mouse (Wired)', category:'Electronics', description:'Plug-and-play USB wired mouse. Ergonomic design, 1200 DPI.', price:199, unit:'each', availability:'available', image:'🖱️', discount:0, tags:['mouse','wired','computer'], updatedAt: now() },
+
+  // Campus Cafe (s004)
+  { id:'p022', shopId:'s004', type:'product', name:'Tea', category:'Food & Cafes', description:'Hot masala chai with ginger and cardamom. Fresh milk daily.', price:15, unit:'cup', availability:'available', image:'🍵', discount:0, tags:['tea','chai','hot drink','beverage'], updatedAt: now() },
+  { id:'p023', shopId:'s004', type:'product', name:'Coffee', category:'Food & Cafes', description:'Strong filter coffee or instant coffee, your choice.', price:25, unit:'cup', availability:'available', image:'☕', discount:0, tags:['coffee','hot drink','beverage'], updatedAt: now() },
+  { id:'p024', shopId:'s004', type:'product', name:'Veg Sandwich', category:'Food & Cafes', description:'Grilled veggie sandwich with cheese, tomato, capsicum, onion.', price:50, unit:'each', availability:'available', image:'🥪', discount:0, tags:['sandwich','snack','veg','food'], updatedAt: now() },
+  { id:'p025', shopId:'s004', type:'product', name:'Veg Fried Rice', category:'Food & Cafes', description:'Tasty veg fried rice with mixed vegetables. Full meal portion.', price:80, unit:'plate', availability:'available', image:'🍚', discount:0, tags:['fried rice','rice','meal','veg','food'], updatedAt: now() },
+  { id:'p026', shopId:'s004', type:'product', name:'Cold Coffee', category:'Food & Cafes', description:'Chilled blended coffee with ice cream and whipped cream.', price:60, unit:'glass', availability:'available', image:'🥤', discount:0, tags:['cold coffee','cold drink','coffee','beverage'], updatedAt: now() },
+  { id:'p027', shopId:'s004', type:'product', name:'Maggi', category:'Food & Cafes', description:'Classic Maggi noodles, hot and spicy. Quick snack fix.', price:30, unit:'plate', availability:'available', image:'🍜', discount:0, tags:['maggi','noodles','snack','food'], updatedAt: now() },
+  { id:'p028', shopId:'s004', type:'product', name:'Fresh Juice', category:'Food & Cafes', description:'Seasonal fresh fruit juice — orange, watermelon, or mango.', price:45, unit:'glass', availability:'available', image:'🍊', discount:0, tags:['juice','fruit','cold drink','beverage'], updatedAt: now() },
+
+  // Project Materials Store (s005)
+  { id:'p029', shopId:'s005', type:'product', name:'Chart Paper (White)', category:'Project Materials', description:'A0 white chart paper for projects and presentations. 100 GSM.', price:12, unit:'each', availability:'available', image:'📋', discount:0, tags:['chart paper','white','project','presentation'], updatedAt: now() },
+  { id:'p030', shopId:'s005', type:'product', name:'Thermocol Sheet', category:'Project Materials', description:'White thermocol sheet, 12mm thick, A2 size. Lightweight and sturdy.', price:35, unit:'each', availability:'available', image:'⬜', discount:0, tags:['thermocol','foam','project','model'], updatedAt: now() },
+  { id:'p031', shopId:'s005', type:'product', name:'Foam Board', category:'Project Materials', description:'White foam board, 5mm. Perfect for project displays and models.', price:60, unit:'each', availability:'available', image:'🟫', discount:0, tags:['foam board','project','display','model'], updatedAt: now() },
+  { id:'p032', shopId:'s005', type:'product', name:'Poster Colours Set', category:'Project Materials', description:'Set of 12 bright poster colours, 15ml each. Vibrant and quick-drying.', price:120, unit:'set', availability:'available', image:'🎨', discount:0, tags:['poster colours','paint','art','project'], updatedAt: now() },
+  { id:'p033', shopId:'s005', type:'product', name:'Sketch Pens Set', category:'Project Materials', description:'24-colour sketch pen set for colouring and project work.', price:90, unit:'set', availability:'available', image:'🖊️', discount:0, tags:['sketch pen','colour','art','project'], updatedAt: now() },
+  { id:'p034', shopId:'s005', type:'product', name:'Record Book', category:'Stationery', description:'A4 hard-cover record book, 150 pages. Ruling on both sides.', price:42, unit:'each', availability:'available', image:'📓', discount:0, tags:['record book','notebook','stationery'], updatedAt: now() },
+  { id:'p035', shopId:'s005', type:'product', name:'Glue Gun (Mini)', category:'Project Materials', description:'Mini glue gun with 10 glue sticks. Great for craft projects.', price:180, unit:'each', availability:'low_stock', image:'🔫', discount:0, tags:['glue gun','glue','craft','project'], updatedAt: now() },
+
+  // College Book House (s006)
+  { id:'p036', shopId:'s006', type:'product', name:'Record Book', category:'Stationery', description:'200-page hard-cover record book. Standard A4 size. Best quality.', price:48, unit:'each', availability:'available', image:'📓', discount:0, tags:['record book','notebook','stationery'], updatedAt: now() },
+  { id:'p037', shopId:'s006', type:'product', name:'Engineering Drawing Book', category:'Books', description:'A3 size drawing book with plain pages, hard cover. 60 sheets.', price:95, unit:'each', availability:'available', image:'📐', discount:0, tags:['drawing book','engineering drawing','A3'], updatedAt: now() },
+  { id:'p038', shopId:'s006', type:'product', name:'Lab Manual', category:'Books', description:'General lab manual for first year engineering. Physics, Chemistry & more.', price:150, unit:'each', availability:'available', image:'🧪', discount:0, tags:['lab manual','lab','first year','engineering'], updatedAt: now() },
+  { id:'p039', shopId:'s006', type:'product', name:'A4 Sheets (500 pack)', category:'Stationery', description:'Good quality 75 GSM A4 paper ream, 500 sheets.', price:265, unit:'ream', availability:'available', image:'📄', discount:0, tags:['a4 sheets','paper','printing'], updatedAt: now() },
+  { id:'p040', shopId:'s006', type:'service', name:'Book Binding', category:'Binding & Lamination', description:'Spiral or hard binding for reports, records, and projects.', price:25, unit:'starting price', availability:'available', image:'📚', discount:0, tags:['binding','book binding','spiral','hard'], updatedAt: now() },
+];
+
+const SEED_REVIEWS = [
+  { id:'r001', shopId:'s001', userId:'u008', userName:'Arjun Sharma', rating:5, text:'Super fast printing! Got my project bound in 10 minutes.', createdAt: now() },
+  { id:'r002', shopId:'s001', userId:'u009', userName:'Priya Reddy',  rating:4, text:'Good service and reasonable prices for binding.', createdAt: now() },
+  { id:'r003', shopId:'s002', userId:'u008', userName:'Arjun Sharma', rating:4, text:'Found everything I needed. Good stock.', createdAt: now() },
+  { id:'r004', shopId:'s004', userId:'u009', userName:'Priya Reddy',  rating:5, text:'Best chai on campus! Quick service too.', createdAt: now() },
+  { id:'r005', shopId:'s003', userId:'u008', userName:'Arjun Sharma', rating:4, text:'Got a good USB drive here. Fair price.', createdAt: now() },
+  { id:'r006', shopId:'s006', userId:'u009', userName:'Priya Reddy',  rating:4, text:'Nice collection of books. The record books are good quality.', createdAt: now() },
+];
+
+// ── Bootstrap ────────────────────────────────────────────────
+function seed() {
+  if (load(KEYS.seeded)) return;
+  save(KEYS.users,    SEED_USERS);
+  save(KEYS.shops,    SEED_SHOPS);
+  save(KEYS.products, SEED_PRODUCTS);
+  save(KEYS.reviews,  SEED_REVIEWS);
+  save(KEYS.reports,  []);
+  save(KEYS.favShops, {});
+  save(KEYS.favProds, {});
+  save(KEYS.seeded,   true);
+}
+
+// ── Auth ─────────────────────────────────────────────────────
+const Auth = {
+  login(email, password) {
+    const users = load(KEYS.users) || [];
+    const user  = users.find(u => u.email===email && u.password===password);
+    if (!user) return null;
+    const sess = { userId: user.id, role: user.role, name: user.name, avatar: user.avatar };
+    save(KEYS.session, sess);
+    return sess;
+  },
+  register({ name, email, password, role='student' }) {
+    const users = load(KEYS.users) || [];
+    if (users.find(u => u.email===email)) return { error: 'Email already registered' };
+    const user = { id:uid(), role, name, email, password, avatar: name[0].toUpperCase(), createdAt: now() };
+    users.push(user);
+    save(KEYS.users, users);
+    const sess = { userId: user.id, role: user.role, name: user.name, avatar: user.avatar };
+    save(KEYS.session, sess);
+    return { user: sess };
+  },
+  logout()    { localStorage.removeItem(KEYS.session); },
+  session()   { return load(KEYS.session); },
+  current()   {
+    const sess = load(KEYS.session);
+    if (!sess) return null;
+    return (load(KEYS.users)||[]).find(u => u.id === sess.userId) || null;
+  },
+};
+
+// ── Shops ─────────────────────────────────────────────────────
+const Shops = {
+  all()       { return load(KEYS.shops) || []; },
+  approved()  { return Shops.all().filter(s => s.status==='approved'); },
+  pending()   { return Shops.all().filter(s => s.status==='pending'); },
+  byId(id)    { return Shops.all().find(s => s.id===id) || null; },
+  byOwner(uid){ return Shops.all().find(s => s.ownerId===uid) || null; },
+  create(data) {
+    const shops = Shops.all();
+    const shop  = { id:uid(), status:'pending', rating:0, reviewCount:0, createdAt:now(), ...data };
+    shops.push(shop);
+    save(KEYS.shops, shops);
+    // Link to user
+    const users = load(KEYS.users)||[];
+    const idx   = users.findIndex(u=>u.id===data.ownerId);
+    if (idx>=0) { users[idx].shopId = shop.id; save(KEYS.users, users); }
+    return shop;
+  },
+  update(id, data) {
+    const shops = Shops.all();
+    const idx   = shops.findIndex(s=>s.id===id);
+    if (idx<0) return null;
+    shops[idx] = { ...shops[idx], ...data, updatedAt:now() };
+    save(KEYS.shops, shops);
+    return shops[idx];
+  },
+  approve(id) { return Shops.update(id, { status:'approved' }); },
+  reject(id)  { return Shops.update(id, { status:'rejected' }); },
+  delete(id)  {
+    save(KEYS.shops, Shops.all().filter(s=>s.id!==id));
+    save(KEYS.products, Products.all().filter(p=>p.shopId!==id));
+  },
+  distance(shop, lat=17.386, lng=78.487) {
+    const R = 6371;
+    const dLat = (shop.lat-lat)*Math.PI/180;
+    const dLng = (shop.lng-lng)*Math.PI/180;
+    const a = Math.sin(dLat/2)**2 + Math.cos(lat*Math.PI/180)*Math.cos(shop.lat*Math.PI/180)*Math.sin(dLng/2)**2;
+    return +(R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))).toFixed(1);
+  },
+};
+
+// ── Products ─────────────────────────────────────────────────
+const Products = {
+  all()        { return load(KEYS.products) || []; },
+  byId(id)     { return Products.all().find(p=>p.id===id) || null; },
+  byShop(sid)  { return Products.all().filter(p=>p.shopId===sid); },
+  create(data) {
+    const prods = Products.all();
+    const prod  = { id:uid(), createdAt:now(), updatedAt:now(), ...data };
+    prods.push(prod);
+    save(KEYS.products, prods);
+    return prod;
+  },
+  update(id, data) {
+    const prods = Products.all();
+    const idx   = prods.findIndex(p=>p.id===id);
+    if (idx<0) return null;
+    prods[idx] = { ...prods[idx], ...data, updatedAt:now() };
+    save(KEYS.products, prods);
+    return prods[idx];
+  },
+  delete(id) { save(KEYS.products, Products.all().filter(p=>p.id!==id)); },
+  finalPrice(p) { return p.discount ? +(p.price*(1-p.discount/100)).toFixed(0) : p.price; },
+  search(query) {
+    const q = query.toLowerCase().trim();
+    return Products.all().filter(p => {
+      const shop = Shops.byId(p.shopId);
+      if (!shop || shop.status!=='approved') return false;
+      return p.name.toLowerCase().includes(q) ||
+             (p.description||'').toLowerCase().includes(q) ||
+             (p.tags||[]).some(t=>t.toLowerCase().includes(q)) ||
+             p.category.toLowerCase().includes(q);
+    });
+  },
+};
+
+// ── Reviews ──────────────────────────────────────────────────
+const Reviews = {
+  all()       { return load(KEYS.reviews) || []; },
+  byShop(sid) { return Reviews.all().filter(r=>r.shopId===sid); },
+  byUser(uid) { return Reviews.all().filter(r=>r.userId===uid); },
+  add(data) {
+    const reviews = Reviews.all();
+    const existing = reviews.findIndex(r=>r.shopId===data.shopId && r.userId===data.userId);
+    const rev = { id:uid(), createdAt:now(), ...data };
+    if (existing>=0) reviews[existing] = rev; else reviews.push(rev);
+    save(KEYS.reviews, reviews);
+    // Recalculate shop rating
+    const shopRevs = Reviews.byShop(data.shopId);
+    const avg = shopRevs.reduce((s,r)=>s+r.rating,0)/shopRevs.length;
+    Shops.update(data.shopId, { rating: +avg.toFixed(1), reviewCount: shopRevs.length });
+    return rev;
+  },
+  delete(id) {
+    const rev = Reviews.all().find(r=>r.id===id);
+    save(KEYS.reviews, Reviews.all().filter(r=>r.id!==id));
+    if (rev) {
+      const shopRevs = Reviews.byShop(rev.shopId);
+      const avg = shopRevs.length ? shopRevs.reduce((s,r)=>s+r.rating,0)/shopRevs.length : 0;
+      Shops.update(rev.shopId, { rating: +avg.toFixed(1), reviewCount: shopRevs.length });
+    }
+  },
+};
+
+// ── Reports ──────────────────────────────────────────────────
+const Reports = {
+  all()    { return load(KEYS.reports) || []; },
+  add(data){ const reps=[...Reports.all(),{id:uid(),status:'pending',createdAt:now(),...data}]; save(KEYS.reports,reps); },
+  resolve(id){ save(KEYS.reports, Reports.all().map(r=>r.id===id?{...r,status:'resolved'}:r)); },
+  delete(id) { save(KEYS.reports, Reports.all().filter(r=>r.id!==id)); },
+};
+
+// ── Favourites ───────────────────────────────────────────────
+const Favs = {
+  _shops(uid)  { return (load(KEYS.favShops)||{})[uid]||[]; },
+  _prods(uid)  { return (load(KEYS.favProds)||{})[uid]||[]; },
+  toggleShop(uid,sid) {
+    const m=load(KEYS.favShops)||{}; m[uid]=m[uid]||[];
+    m[uid]=m[uid].includes(sid)?m[uid].filter(x=>x!==sid):[...m[uid],sid];
+    save(KEYS.favShops,m);
+    return m[uid].includes(sid);
+  },
+  toggleProd(uid,pid) {
+    const m=load(KEYS.favProds)||{}; m[uid]=m[uid]||[];
+    m[uid]=m[uid].includes(pid)?m[uid].filter(x=>x!==pid):[...m[uid],pid];
+    save(KEYS.favProds,m);
+    return m[uid].includes(pid);
+  },
+  hasShop(uid,sid) { return Favs._shops(uid).includes(sid); },
+  hasProd(uid,pid) { return Favs._prods(uid).includes(pid); },
+  shops(uid)  { return Favs._shops(uid).map(id=>Shops.byId(id)).filter(Boolean); },
+  prods(uid)  { return Favs._prods(uid).map(id=>Products.byId(id)).filter(Boolean); },
+};
+
+// ── Stats ─────────────────────────────────────────────────────
+const Stats = {
+  get() {
+    const users    = load(KEYS.users)||[];
+    const shops    = Shops.all();
+    const products = Products.all();
+    return {
+      students:  users.filter(u=>u.role==='student').length,
+      providers: users.filter(u=>u.role==='provider').length,
+      shops:     shops.filter(s=>s.status==='approved').length,
+      pending:   shops.filter(s=>s.status==='pending').length,
+      products:  products.length,
+      reviews:   (load(KEYS.reviews)||[]).length,
+      reports:   Reports.all().filter(r=>r.status==='pending').length,
+    };
+  },
+};
+
+// ── Categories ────────────────────────────────────────────────
+const CATEGORIES = [
+  { name:'Stationery',           icon:'✏️',  color:'#4F46E5' },
+  { name:'Printing & Xerox',     icon:'🖨️',  color:'#0891B2' },
+  { name:'Project Materials',    icon:'🎨',  color:'#059669' },
+  { name:'Electronics',          icon:'💻',  color:'#DC2626' },
+  { name:'Food & Cafes',         icon:'☕',  color:'#D97706' },
+  { name:'Books',                icon:'📚',  color:'#7C3AED' },
+  { name:'Binding & Lamination', icon:'📎',  color:'#BE185D' },
+  { name:'Repair Services',      icon:'🔧',  color:'#B45309' },
+  { name:'College Supplies',     icon:'🎒',  color:'#0F766E' },
+  { name:'Other Services',       icon:'🛍️',  color:'#64748B' },
+];
+
+// ── Search ─────────────────────────────────────────────────────
+function searchAll(query) {
+  const q = query.toLowerCase().trim();
+  if (!q) return { shops:[], products:[] };
+  const shops = Shops.approved().filter(s =>
+    s.name.toLowerCase().includes(q) ||
+    s.category.toLowerCase().includes(q) ||
+    (s.tags||[]).some(t=>t.toLowerCase().includes(q)) ||
+    (s.description||'').toLowerCase().includes(q)
+  );
+  const products = Products.search(q);
+  return { shops, products };
+}
+
+// Init
+seed();
+
+return {
+  Auth, Shops, Products, Reviews, Reports, Favs, Stats,
+  CATEGORIES, searchAll, uid, now, clone,
+  AVAILABILITY_LABELS: {
+    available:  { label:'Available',          color:'#059669', bg:'#D1FAE5' },
+    low_stock:  { label:'Low Stock',          color:'#D97706', bg:'#FEF3C7' },
+    out_of_stock:{ label:'Out of Stock',      color:'#DC2626', bg:'#FEE2E2' },
+    on_request: { label:'Available on Request',color:'#6366F1',bg:'#EEF2FF' },
+  },
+};
+})();
+
+</script>
+<script>
+// ============================================================
+// CampusConnect — UI Utilities & Router
+// ============================================================
+
+const UI = (() => {
+
+// ── Toast ─────────────────────────────────────────────────────
+function toast(msg, type='success') {
+  const t = document.createElement('div');
+  t.className = `toast toast-${type}`;
+  t.innerHTML = `<span>${type==='success'?'✓':type==='error'?'✕':'ℹ'}</span> ${msg}`;
+  document.getElementById('toast-container').appendChild(t);
+  setTimeout(()=>t.classList.add('show'),10);
+  setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>t.remove(),300); },3000);
+}
+
+// ── Modal ─────────────────────────────────────────────────────
+function modal({ title, body, footer='', wide=false }) {
+  const id = 'modal-'+Date.now();
+  const el = document.createElement('div');
+  el.className = 'modal-overlay';
+  el.id = id;
+  el.innerHTML = `
+    <div class="modal-box${wide?' modal-wide':''}">
+      <div class="modal-head">
+        <h3 class="modal-title">${title}</h3>
+        <button class="modal-close" onclick="UI.closeModal('${id}')">✕</button>
+      </div>
+      <div class="modal-body">${body}</div>
+      ${footer?`<div class="modal-foot">${footer}</div>`:''}
+    </div>`;
+  document.body.appendChild(el);
+  setTimeout(()=>el.classList.add('open'),10);
+  return id;
+}
+function closeModal(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.remove('open');
+  setTimeout(()=>el.remove(),300);
+}
+
+// ── Confirm ───────────────────────────────────────────────────
+function confirm(msg, onYes, danger=false) {
+  const id = modal({
+    title: 'Are you sure?',
+    body: `<p>${msg}</p>`,
+    footer: `
+      <button class="btn btn-ghost" onclick="UI.closeModal('${id}')">Cancel</button>
+      <button class="${danger?'btn btn-danger':'btn btn-primary'}" id="confirm-yes-${id}">Confirm</button>`,
+  });
+  setTimeout(()=>{
+    const btn = document.getElementById(`confirm-yes-${id}`);
+    if (btn) btn.onclick = ()=>{ closeModal(id); onYes(); };
+  },20);
+}
+
+// ── Rating Stars ─────────────────────────────────────────────
+function stars(rating, max=5) {
+  let s='';
+  for (let i=1;i<=max;i++) {
+    if (i<=Math.floor(rating)) s+='★';
+    else if (i-0.5<=rating)    s+='½';
+    else                        s+='☆';
+  }
+  return `<span class="stars" title="${rating}/${max}">${s}</span>`;
+}
+
+// ── Price Display ─────────────────────────────────────────────
+function price(product) {
+  const fp = CC.Products.finalPrice(product);
+  if (product.discount) {
+    return `<span class="price-final">₹${fp}</span> <span class="price-orig">₹${product.price}</span> <span class="badge-discount">${product.discount}% off</span>`;
+  }
+  return `<span class="price-final">₹${fp}</span>`;
+}
+
+// ── Availability Badge ────────────────────────────────────────
+function avail(status) {
+  const info = CC.AVAILABILITY_LABELS[status] || CC.AVAILABILITY_LABELS.available;
+  return `<span class="avail-badge" style="color:${info.color};background:${info.bg}">${info.label}</span>`;
+}
+
+// ── Shop Card ─────────────────────────────────────────────────
+function shopCard(shop, opts={}) {
+  const dist   = CC.Shops.distance(shop);
+  const sess   = CC.Auth.session();
+  const isFav  = sess ? CC.Favs.hasShop(sess.userId, shop.id) : false;
+  const prods  = CC.Products.byShop(shop.id).length;
+  return `
+<div class="shop-card" onclick="App.openShop('${shop.id}')">
+  <div class="shop-card-banner">
+    <span class="shop-emoji">${shop.image||'🏪'}</span>
+    ${sess ? `<button class="fav-btn ${isFav?'fav-active':''}" onclick="event.stopPropagation();App.toggleShopFav('${shop.id}',this)" title="Save">♥</button>` : ''}
+  </div>
+  <div class="shop-card-body">
+    <div class="shop-card-cat">${shop.category}</div>
+    <h3 class="shop-card-name">${shop.name}</h3>
+    <p class="shop-card-tagline">${shop.tagline||''}</p>
+    <div class="shop-card-meta">
+      <span>${stars(shop.rating||0)} <span class="shop-rating-num">${shop.rating||'–'}</span></span>
+      <span class="dot">·</span>
+      <span>${dist} km</span>
+      <span class="dot">·</span>
+      <span>${prods} items</span>
+    </div>
+    <div class="shop-card-address">📍 ${shop.address}</div>
+  </div>
+</div>`;
+}
+
+// ── Product Card ──────────────────────────────────────────────
+function productCard(product, showShop=true) {
+  const shop = CC.Shops.byId(product.shopId);
+  const sess = CC.Auth.session();
+  const isFav= sess ? CC.Favs.hasProd(sess.userId, product.id) : false;
+  return `
+<div class="product-card" onclick="App.openProduct('${product.id}')">
+  <div class="product-card-top">
+    <span class="product-emoji">${product.image||'📦'}</span>
+    ${sess?`<button class="fav-btn ${isFav?'fav-active':''}" onclick="event.stopPropagation();App.toggleProdFav('${product.id}',this)">♥</button>`:''}
+  </div>
+  <div class="product-card-body">
+    <span class="product-cat-badge">${product.category}</span>
+    <h4 class="product-name">${product.name}</h4>
+    <p class="product-desc">${(product.description||'').slice(0,70)}${product.description&&product.description.length>70?'…':''}</p>
+    <div class="product-price-row">${price(product)} ${product.unit?`<span class="unit">/ ${product.unit}</span>`:''}</div>
+    ${avail(product.availability)}
+    ${showShop&&shop?`<div class="product-shop-name">📍 ${shop.name}</div>`:''}
+  </div>
+</div>`;
+}
+
+// ── Empty State ───────────────────────────────────────────────
+function empty(icon, title, msg='') {
+  return `<div class="empty-state"><div class="empty-icon">${icon}</div><h3>${title}</h3>${msg?`<p>${msg}</p>`:''}</div>`;
+}
+
+// ── Loading ───────────────────────────────────────────────────
+function loading() {
+  return `<div class="loading-state"><div class="spinner"></div><p>Loading…</p></div>`;
+}
+
+// ── Section Header ────────────────────────────────────────────
+function sectionHeader(title, action='', href='') {
+  return `<div class="section-header">
+    <h2 class="section-title">${title}</h2>
+    ${action?`<a href="#" class="section-link" onclick="${href}">${action}</a>`:''}
+  </div>`;
+}
+
+// ── Input / Form Helpers ──────────────────────────────────────
+function field({ id, label, type='text', value='', placeholder='', required=false, options=null, textarea=false, min, max, step }) {
+  const req = required ? 'required' : '';
+  const val = value !== undefined ? `value="${String(value).replace(/"/g,'&quot;')}"` : '';
+  if (textarea) {
+    return `<div class="field"><label for="${id}">${label}${required?'*':''}</label>
+      <textarea id="${id}" name="${id}" placeholder="${placeholder}" ${req}>${value}</textarea></div>`;
+  }
+  if (options) {
+    const opts = options.map(o=>
+      typeof o==='string'
+        ? `<option value="${o}" ${value===o?'selected':''}>${o}</option>`
+        : `<option value="${o.value}" ${value===o.value?'selected':''}>${o.label}</option>`
+    ).join('');
+    return `<div class="field"><label for="${id}">${label}${required?'*':''}</label>
+      <select id="${id}" name="${id}" ${req}><option value="">Select…</option>${opts}</select></div>`;
+  }
+  const extras = [min!==undefined?`min="${min}"`:'', max!==undefined?`max="${max}"`:'', step?`step="${step}"`:''].filter(Boolean).join(' ');
+  return `<div class="field"><label for="${id}">${label}${required?'*':''}</label>
+    <input type="${type}" id="${id}" name="${id}" placeholder="${placeholder}" ${val} ${req} ${extras}></div>`;
+}
+
+function formData(form) {
+  const fd = new FormData(form);
+  const out = {};
+  for (const [k,v] of fd.entries()) out[k] = v;
+  return out;
+}
+
+return {
+  toast, modal, closeModal, confirm,
+  stars, price, avail, shopCard, productCard,
+  empty, loading, sectionHeader, field, formData,
+};
+})();
+
+</script>
+<script>
+// ============================================================
+// CampusConnect — App Controller & Router
+// ============================================================
+
+const App = (() => {
+
+let _currentPage = null;
+
+// ── Navigation ────────────────────────────────────────────────
+function nav(page, params={}) {
+  const url = new URL(window.location);
+  url.searchParams.set('page', page);
+  Object.entries(params).forEach(([k,v])=>url.searchParams.set(k,v));
+  // Clear params not in new set
+  ['shopId','productId','query','category','tab'].forEach(k=>{
+    if (!(k in params)) url.searchParams.delete(k);
+  });
+  window.history.pushState({}, '', url);
+  render();
+}
+
+function getParams() {
+  const p = new URLSearchParams(window.location.search);
+  return {
+    page:      p.get('page') || 'home',
+    shopId:    p.get('shopId'),
+    productId: p.get('productId'),
+    query:     p.get('query') || '',
+    category:  p.get('category') || '',
+    tab:       p.get('tab') || '',
+  };
+}
+
+// ── Render ────────────────────────────────────────────────────
+function render() {
+  const params  = getParams();
+  const sess    = CC.Auth.session();
+  const main    = document.getElementById('main');
+  const navLinks= document.getElementById('nav-links');
+
+  // Scroll to top
+  window.scrollTo(0,0);
+
+  // Nav bar update
+  renderNav(sess, params.page);
+
+  // Page routing
+  switch (params.page) {
+    case 'home':      Pages.home(main, sess, params);      break;
+    case 'search':    Pages.search(main, sess, params);    break;
+    case 'shop':      Pages.shop(main, sess, params);      break;
+    case 'product':   Pages.product(main, sess, params);   break;
+    case 'compare':   Pages.compare(main, sess, params);   break;
+    case 'favorites': Pages.favorites(main, sess, params); break;
+    case 'login':     Pages.login(main, sess, params);     break;
+    case 'register':  Pages.register(main, sess, params);  break;
+    case 'dashboard': Pages.dashboard(main, sess, params); break;
+    case 'admin':     Pages.admin(main, sess, params);     break;
+    case 'shop-setup':Pages.shopSetup(main, sess, params); break;
+    default:          Pages.home(main, sess, params);
+  }
+  _currentPage = params.page;
+}
+
+function renderNav(sess, page) {
+  const nav = document.getElementById('navbar');
+  const role= sess?.role;
+  nav.innerHTML = `
+<div class="nav-inner">
+  <a class="nav-brand" href="#" onclick="App.nav('home')">
+    <span class="brand-icon">🎓</span>
+    <span class="brand-text">Campus<span>Connect</span></span>
+  </a>
+
+  <div class="nav-search-wrap" id="nav-search-wrap">
+    <form class="nav-search-form" onsubmit="event.preventDefault();App.doSearch(document.getElementById('nav-q').value)">
+      <input id="nav-q" type="text" placeholder="Search products, shops…" autocomplete="off">
+      <button type="submit">🔍</button>
+    </form>
+  </div>
+
+  <button class="hamburger" id="hamburger" onclick="App.toggleMenu()">☰</button>
+
+  <nav class="nav-links" id="nav-links">
+    <a href="#" class="${page==='home'?'active':''}"     onclick="App.nav('home')">Home</a>
+    <a href="#" class="${page==='search'?'active':''}"   onclick="App.nav('search')">Browse</a>
+    ${sess ? `<a href="#" class="${page==='favorites'?'active':''}" onclick="App.nav('favorites')">Saved</a>` : ''}
+    ${role==='provider'||role==='admin' ? `<a href="#" class="${page==='dashboard'||page==='admin'?'active':''}" onclick="App.nav(${role==='admin'?`'admin'`:`'dashboard'`})">${role==='admin'?'Admin':'Dashboard'}</a>` : ''}
+    ${sess
+      ? `<button class="btn btn-ghost btn-sm" onclick="App.logout()">${sess.avatar} ${sess.name.split(' ')[0]}</button>`
+      : `<a href="#" onclick="App.nav('login')" class="btn btn-primary btn-sm">Sign in</a>`
+    }
+  </nav>
+</div>`;
+}
+
+// ── Actions ───────────────────────────────────────────────────
+function doSearch(q) {
+  if (!q.trim()) return;
+  nav('search', { query: q.trim() });
+}
+
+function openShop(id) { nav('shop', { shopId: id }); }
+function openProduct(id) { nav('product', { productId: id }); }
+
+function toggleShopFav(id, btn) {
+  const sess = CC.Auth.session();
+  if (!sess) { UI.toast('Sign in to save shops','error'); return; }
+  const now = CC.Favs.toggleShop(sess.userId, id);
+  btn.classList.toggle('fav-active', now);
+  UI.toast(now ? 'Shop saved!' : 'Removed from saved');
+}
+
+function toggleProdFav(id, btn) {
+  const sess = CC.Auth.session();
+  if (!sess) { UI.toast('Sign in to save items','error'); return; }
+  const now = CC.Favs.toggleProd(sess.userId, id);
+  btn.classList.toggle('fav-active', now);
+  UI.toast(now ? 'Item saved!' : 'Removed from saved');
+}
+
+function logout() {
+  CC.Auth.logout();
+  UI.toast('Signed out');
+  nav('home');
+}
+
+function toggleMenu() {
+  document.getElementById('nav-links').classList.toggle('open');
+}
+
+// Window resize - close menu
+window.addEventListener('resize', ()=>{
+  const nl = document.getElementById('nav-links');
+  if (nl && window.innerWidth>768) nl.classList.remove('open');
+});
+
+// ── Init ──────────────────────────────────────────────────────
+function init() {
+  window.addEventListener('popstate', render);
+  render();
+}
+
+return {
+  nav, render, doSearch, openShop, openProduct,
+  toggleShopFav, toggleProdFav, logout, toggleMenu, init,
+};
+})();
+
+// ============================================================
+// Pages
+// ============================================================
+const Pages = {};
+
+// ── Home ──────────────────────────────────────────────────────
+Pages.home = function(main, sess, params) {
+  const shops   = CC.Shops.approved();
+  const cats    = CC.CATEGORIES;
+  const popular = CC.Products.all()
+    .filter(p=>{ const s=CC.Shops.byId(p.shopId); return s&&s.status==='approved'; })
+    .slice(0,8);
+
+  main.innerHTML = `
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">🎓 For students, by campus</div>
+    <h1 class="hero-title">Find any product at any campus shop — <em>before you go</em></h1>
+    <p class="hero-sub">Search for a record book, coffee, USB drive, or printing service and instantly compare nearby shops, prices, and availability.</p>
+    <form class="hero-search" onsubmit="event.preventDefault();App.doSearch(document.getElementById('hero-q').value)">
+      <input id="hero-q" type="text" placeholder='Try "record book", "spiral binding", "tea"…' autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+    <div class="hero-examples">
+      Popular: 
+      <span onclick="App.doSearch('record book')">Record Book</span>
+      <span onclick="App.doSearch('printing')">Printing</span>
+      <span onclick="App.doSearch('coffee')">Coffee</span>
+      <span onclick="App.doSearch('USB drive')">USB Drive</span>
+      <span onclick="App.doSearch('binding')">Binding</span>
+    </div>
+  </div>
+</section>
+
+<div class="page-wrap">
+  ${UI.sectionHeader('Browse by Category', 'View all', "App.nav('search')")}
+  <div class="cat-grid">
+    ${cats.map(c=>`
+      <div class="cat-card" onclick="App.nav('search',{category:'${c.name}'})" style="--cat-color:${c.color}">
+        <span class="cat-icon">${c.icon}</span>
+        <span class="cat-name">${c.name}</span>
+      </div>`).join('')}
+  </div>
+
+  ${UI.sectionHeader('Nearby Shops', 'See all', "App.nav('search')")}
+  <div class="shop-grid">
+    ${shops.slice(0,6).map(s=>UI.shopCard(s)).join('') || UI.empty('🏪','No shops yet')}
+  </div>
+
+  ${UI.sectionHeader('Popular Products', 'See all', "App.nav('search')")}
+  <div class="product-grid">
+    ${popular.map(p=>UI.productCard(p)).join('') || UI.empty('📦','No products yet')}
+  </div>
+</div>`;
+};
+
+// ── Search ────────────────────────────────────────────────────
+Pages.search = function(main, sess, params) {
+  const { query, category } = params;
+  let { shops, products } = CC.searchAll(query);
+
+  if (category) {
+    shops    = (query ? shops : CC.Shops.approved()).filter(s=>s.category===category);
+    products = (query ? products : CC.Products.all().filter(p=>{ const s=CC.Shops.byId(p.shopId); return s&&s.status==='approved'; }))
+               .filter(p=>p.category===category);
+  } else if (!query) {
+    shops    = CC.Shops.approved();
+    products = CC.Products.all().filter(p=>{ const s=CC.Shops.byId(p.shopId); return s&&s.status==='approved'; });
+  }
+
+  // Filters
+  let sortShops = shops.slice();
+  let sortProds = products.slice();
+
+  const avFilter   = document.getElementById('filter-avail')?.value || '';
+  const sortShopBy = document.getElementById('sort-shops')?.value || 'rating';
+  const sortProdBy = document.getElementById('sort-prods')?.value || 'price';
+
+  if (avFilter) sortProds = sortProds.filter(p=>p.availability===avFilter);
+
+  if (sortShopBy==='distance') sortShops.sort((a,b)=>CC.Shops.distance(a)-CC.Shops.distance(b));
+  else if (sortShopBy==='rating') sortShops.sort((a,b)=>(b.rating||0)-(a.rating||0));
+  else if (sortShopBy==='name') sortShops.sort((a,b)=>a.name.localeCompare(b.name));
+
+  if (sortProdBy==='price')    sortProds.sort((a,b)=>CC.Products.finalPrice(a)-CC.Products.finalPrice(b));
+  else if (sortProdBy==='price-desc') sortProds.sort((a,b)=>CC.Products.finalPrice(b)-CC.Products.finalPrice(a));
+  else if (sortProdBy==='name') sortProds.sort((a,b)=>a.name.localeCompare(b.name));
+
+  // Find comparable products (same name in multiple shops)
+  const nameCounts = {};
+  sortProds.forEach(p=>{ const n=p.name.toLowerCase(); nameCounts[n]=(nameCounts[n]||0)+1; });
+  const comparableNames = Object.keys(nameCounts).filter(n=>nameCounts[n]>1);
+
+  main.innerHTML = `
+<div class="page-wrap">
+  <div class="search-header">
+    <h1 class="search-title">${query ? `Results for "<strong>${query}</strong>"` : category ? `<strong>${category}</strong>` : 'Browse All'}</h1>
+    ${query ? `<span class="search-count">${shops.length} shops · ${products.length} products</span>` : ''}
+  </div>
+
+  <div class="search-bar-wrap">
+    <form class="search-bar-form" onsubmit="event.preventDefault();App.doSearch(document.getElementById('search-q').value)">
+      <input id="search-q" type="text" value="${query}" placeholder="Search products, shops, services…">
+      <button type="submit">🔍 Search</button>
+    </form>
+  </div>
+
+  <div class="search-cats-scroll">
+    <button class="cat-pill ${!category?'active':''}" onclick="App.nav('search',{query:'${query}'})">All</button>
+    ${CC.CATEGORIES.map(c=>`<button class="cat-pill ${category===c.name?'active':''}" onclick="App.nav('search',{query:'${query}',category:'${c.name}'})">${c.icon} ${c.name}</button>`).join('')}
+  </div>
+
+  ${comparableNames.length&&query ? `
+  <div class="compare-tip">
+    💡 "${query}" is available at multiple shops — <a href="#" onclick="App.nav('compare',{query:'${query}'})">Compare prices & availability →</a>
+  </div>` : ''}
+
+  <div class="search-layout">
+    <aside class="search-filters">
+      <h3>Filters</h3>
+      <label>Availability</label>
+      <select id="filter-avail" onchange="Pages.search(document.getElementById('main'),null,{query:'${query}',category:'${category}'})">
+        <option value="">All</option>
+        <option value="available" ${avFilter==='available'?'selected':''}>Available</option>
+        <option value="low_stock" ${avFilter==='low_stock'?'selected':''}>Low Stock</option>
+        <option value="out_of_stock" ${avFilter==='out_of_stock'?'selected':''}>Out of Stock</option>
+      </select>
+
+      <label>Sort Shops</label>
+      <select id="sort-shops" onchange="Pages.search(document.getElementById('main'),null,{query:'${query}',category:'${category}'})">
+        <option value="rating">By Rating</option>
+        <option value="distance">By Distance</option>
+        <option value="name">By Name</option>
+      </select>
+
+      <label>Sort Products</label>
+      <select id="sort-prods" onchange="Pages.search(document.getElementById('main'),null,{query:'${query}',category:'${category}'})">
+        <option value="price">Price: Low→High</option>
+        <option value="price-desc">Price: High→Low</option>
+        <option value="name">Name A–Z</option>
+      </select>
+    </aside>
+
+    <div class="search-results">
+      ${sortProds.length ? `
+        <h2 class="results-section-title">Products & Services (${sortProds.length})</h2>
+        <div class="product-grid">
+          ${sortProds.map(p=>UI.productCard(p)).join('')}
+        </div>` : query||category ? UI.empty('📦','No products found','Try a different search term.') : ''}
+
+      ${sortShops.length ? `
+        <h2 class="results-section-title" style="margin-top:2.5rem">Shops (${sortShops.length})</h2>
+        <div class="shop-grid">
+          ${sortShops.map(s=>UI.shopCard(s)).join('')}
+        </div>` : ''}
+
+      ${!sortProds.length && !sortShops.length ? UI.empty('🔍','Nothing found',`We couldn't find anything for "${query||category}". Try a different term.`) : ''}
+    </div>
+  </div>
+</div>`;
+};
+
+// ── Shop Page ──────────────────────────────────────────────────
+Pages.shop = function(main, sess, params) {
+  const shop = CC.Shops.byId(params.shopId);
+  if (!shop) { main.innerHTML = UI.empty('🏪','Shop not found'); return; }
+
+  const products = CC.Products.byShop(shop.id);
+  const reviews  = CC.Reviews.byShop(shop.id);
+  const dist     = CC.Shops.distance(shop);
+  const isFav    = sess ? CC.Favs.hasShop(sess.userId, shop.id) : false;
+  const tab      = params.tab || 'products';
+
+  // Group products by type
+  const prodList = products.filter(p=>p.type==='product');
+  const servList = products.filter(p=>p.type==='service');
+
+  const userReview = sess ? reviews.find(r=>r.userId===sess.userId) : null;
+
+  main.innerHTML = `
+<div class="shop-hero" style="background:linear-gradient(135deg,#1e293b 0%,#334155 100%)">
+  <div class="page-wrap">
+    <div class="shop-hero-inner">
+      <div class="shop-avatar">${shop.image||'🏪'}</div>
+      <div class="shop-hero-info">
+        <div class="shop-hero-cat">${shop.category}</div>
+        <h1 class="shop-hero-name">${shop.name}</h1>
+        <p class="shop-hero-tagline">${shop.tagline||''}</p>
+        <div class="shop-hero-meta">
+          ${UI.stars(shop.rating||0)} <span>${shop.rating||'–'} (${shop.reviewCount} reviews)</span>
+          <span class="dot">·</span><span>📍 ${dist} km</span>
+          <span class="dot">·</span><span>📞 <a href="tel:${shop.phone}" style="color:#94a3b8">${shop.phone}</a></span>
+        </div>
+        <div class="shop-hero-actions">
+          <a href="tel:${shop.phone}" class="btn btn-primary btn-sm">📞 Call</a>
+          <a href="https://maps.google.com/?q=${shop.lat},${shop.lng}" target="_blank" class="btn btn-ghost-light btn-sm">🗺️ Directions</a>
+          ${sess?`<button class="btn ${isFav?'btn-fav-active':'btn-ghost-light'} btn-sm" onclick="App.toggleShopFav('${shop.id}',this)">♥ ${isFav?'Saved':'Save'}</button>`:''}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page-wrap shop-page">
+  <div class="shop-info-bar">
+    <div class="shop-info-item"><strong>Address</strong> ${shop.address}</div>
+    <div class="shop-info-item"><strong>Hours</strong> ${shop.hours}</div>
+    <div class="shop-info-item"><strong>Description</strong> ${shop.description}</div>
+  </div>
+
+  <div class="shop-tabs">
+    <button class="shop-tab ${tab==='products'?'active':''}" onclick="App.nav('shop',{shopId:'${shop.id}',tab:'products'})">
+      Products ${prodList.length?`(${prodList.length})`:''}
+    </button>
+    <button class="shop-tab ${tab==='services'?'active':''}" onclick="App.nav('shop',{shopId:'${shop.id}',tab:'services'})">
+      Services ${servList.length?`(${servList.length})`:''}
+    </button>
+    <button class="shop-tab ${tab==='reviews'?'active':''}" onclick="App.nav('shop',{shopId:'${shop.id}',tab:'reviews'})">
+      Reviews (${reviews.length})
+    </button>
+  </div>
+
+  <div class="shop-tab-content">
+    ${tab==='products' ? (prodList.length
+      ? `<div class="product-grid">${prodList.map(p=>UI.productCard(p,false)).join('')}</div>`
+      : UI.empty('📦','No products listed','This shop hasn\'t added products yet.'))
+    : ''}
+    ${tab==='services' ? (servList.length
+      ? `<div class="product-grid">${servList.map(p=>UI.productCard(p,false)).join('')}</div>`
+      : UI.empty('🔧','No services listed','This shop hasn\'t added services yet.'))
+    : ''}
+    ${tab==='reviews' ? `
+      ${sess&&!userReview ? `
+        <div class="review-form-box">
+          <h3>Leave a Review</h3>
+          <form id="review-form" onsubmit="App.submitReview(event,'${shop.id}')">
+            <div class="star-picker" id="star-picker">
+              ${[1,2,3,4,5].map(n=>`<span class="star-pick" data-v="${n}" onclick="App.pickStar(${n})">☆</span>`).join('')}
+            </div>
+            <input type="hidden" id="review-rating" value="0">
+            <textarea id="review-text" placeholder="Share your experience…" required></textarea>
+            <button class="btn btn-primary" type="submit">Submit Review</button>
+          </form>
+        </div>` : ''}
+      ${userReview ? `<div class="alert alert-info">You've already reviewed this shop. <a href="#" onclick="App.deleteReview('${userReview.id}','${shop.id}')">Delete review</a></div>` : ''}
+      ${reviews.length
+        ? reviews.map(r=>`
+          <div class="review-card">
+            <div class="review-header">
+              <span class="review-avatar">${r.userName[0]}</span>
+              <div>
+                <div class="review-name">${r.userName}</div>
+                <div>${UI.stars(r.rating)}</div>
+              </div>
+              <div class="review-date">${new Date(r.createdAt).toLocaleDateString()}</div>
+            </div>
+            <p class="review-text">${r.text}</p>
+          </div>`).join('')
+        : UI.empty('💬','No reviews yet','Be the first to review this shop!')}
+    ` : ''}
+  </div>
+</div>`;
+};
+
+// ── Product Page ───────────────────────────────────────────────
+Pages.product = function(main, sess, params) {
+  const product = CC.Products.byId(params.productId);
+  if (!product) { main.innerHTML = UI.empty('📦','Product not found'); return; }
+  const shop  = CC.Shops.byId(product.shopId);
+  const isFav = sess ? CC.Favs.hasProd(sess.userId, product.id) : false;
+  const similar = CC.Products.search(product.name).filter(p=>p.id!==product.id && p.shopId!==product.shopId);
+
+  main.innerHTML = `
+<div class="page-wrap product-page">
+  <div class="breadcrumb">
+    <a href="#" onclick="App.nav('home')">Home</a> ›
+    <a href="#" onclick="App.nav('search',{category:'${product.category}'})">${product.category}</a> ›
+    ${product.name}
+  </div>
+
+  <div class="product-detail-card">
+    <div class="product-detail-media">
+      <div class="product-detail-emoji">${product.image||'📦'}</div>
+      ${product.discount?`<div class="product-discount-badge">${product.discount}% OFF</div>`:''}
+    </div>
+    <div class="product-detail-info">
+      <span class="product-cat-badge">${product.category}</span>
+      <h1 class="product-detail-name">${product.name}</h1>
+      <p class="product-detail-desc">${product.description||''}</p>
+      <div class="product-detail-price">${UI.price(product)} ${product.unit?`<span class="unit">/ ${product.unit}</span>`:''}</div>
+      <div style="margin:.75rem 0">${UI.avail(product.availability)}</div>
+      ${shop?`
+      <div class="product-detail-shop" onclick="App.openShop('${shop.id}')">
+        <span class="shop-mini-icon">${shop.image||'🏪'}</span>
+        <div>
+          <div class="shop-mini-name">${shop.name}</div>
+          <div class="shop-mini-meta">${UI.stars(shop.rating||0)} · ${CC.Shops.distance(shop)} km · ${shop.address}</div>
+        </div>
+        <span class="arrow">›</span>
+      </div>`:''}
+      <div class="product-detail-actions">
+        <button class="btn btn-primary" onclick="App.openShop('${shop?.id||''}')">View Shop</button>
+        ${sess?`<button class="btn ${isFav?'btn-fav-active':'btn-ghost'}" onclick="App.toggleProdFav('${product.id}',this)">♥ ${isFav?'Saved':'Save'}</button>`:''}
+        ${similar.length?`<button class="btn btn-ghost" onclick="App.nav('compare',{query:'${encodeURIComponent(product.name)}'})">Compare Prices</button>`:''}
+      </div>
+      <div class="product-updated">Last updated ${new Date(product.updatedAt).toLocaleDateString()}</div>
+    </div>
+  </div>
+
+  ${similar.length ? `
+    ${UI.sectionHeader('Same product at other shops', 'Compare all', `App.nav('compare',{query:'${encodeURIComponent(product.name)}'})`)}
+    <div class="similar-table">
+      <table>
+        <thead><tr><th>Shop</th><th>Price</th><th>Availability</th><th>Distance</th><th></th></tr></thead>
+        <tbody>
+          ${similar.map(p=>{
+            const s=CC.Shops.byId(p.shopId);
+            return `<tr>
+              <td><strong>${s?.name||'–'}</strong></td>
+              <td>${UI.price(p)}</td>
+              <td>${UI.avail(p.availability)}</td>
+              <td>${s?CC.Shops.distance(s):'-'} km</td>
+              <td><button class="btn btn-ghost btn-sm" onclick="App.openShop('${p.shopId}')">View</button></td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>` : ''}
+</div>`;
+};
+
+// ── Compare Page ───────────────────────────────────────────────
+Pages.compare = function(main, sess, params) {
+  const query = decodeURIComponent(params.query||'');
+  const products = query ? CC.Products.search(query) : [];
+
+  // Group by normalised name
+  const groups = {};
+  products.forEach(p=>{
+    const k = p.name.toLowerCase();
+    if (!groups[k]) groups[k]=[];
+    groups[k].push(p);
+  });
+  const multiGroups = Object.values(groups).filter(g=>g.length>1);
+
+  main.innerHTML = `
+<div class="page-wrap">
+  <h1 class="page-title">Compare Prices</h1>
+  <p class="page-sub">See the same product across all campus shops — sorted by price.</p>
+
+  <form class="search-bar-form" style="max-width:500px;margin-bottom:2rem" onsubmit="event.preventDefault();App.nav('compare',{query:document.getElementById('cmp-q').value})">
+    <input id="cmp-q" type="text" value="${query}" placeholder="Search a product to compare…">
+    <button type="submit">Compare</button>
+  </form>
+
+  ${multiGroups.length ? multiGroups.map(group=>{
+    const sorted = group.slice().sort((a,b)=>CC.Products.finalPrice(a)-CC.Products.finalPrice(b));
+    const best   = sorted[0];
+    return `
+    <div class="compare-group">
+      <div class="compare-group-title">
+        <span class="compare-emoji">${group[0].image||'📦'}</span>
+        <h2>${group[0].name}</h2>
+        <span class="compare-count">${group.length} shops</span>
+      </div>
+      <div class="compare-table-wrap">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Shop</th><th>Price</th><th>Availability</th><th>Distance</th><th>Rating</th><th></th>
+            </tr>
+          </thead>
+          <tbody>
+            ${sorted.map((p,i)=>{
+              const shop=CC.Shops.byId(p.shopId);
+              return `
+              <tr class="${i===0?'compare-best':''}">
+                <td>
+                  <div class="compare-shop-name">${shop?.name||'–'} ${i===0?'<span class="best-badge">Best Price</span>':''}</div>
+                  <div class="compare-shop-addr">${shop?.address||''}</div>
+                </td>
+                <td class="compare-price">${UI.price(p)}</td>
+                <td>${UI.avail(p.availability)}</td>
+                <td>${shop?CC.Shops.distance(shop)+' km':'–'}</td>
+                <td>${shop?UI.stars(shop.rating||0):''} ${shop?.rating||'–'}</td>
+                <td>
+                  <button class="btn btn-primary btn-sm" onclick="App.openShop('${p.shopId}')">View Shop</button>
+                </td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+  }).join('') : query
+    ? UI.empty('🔍','No comparable products','This product is only available at one shop or wasn\'t found.')
+    : UI.empty('📊','Compare Products','Search for a product above to see price comparisons.')}
+</div>`;
+};
+
+// ── Favorites ──────────────────────────────────────────────────
+Pages.favorites = function(main, sess, params) {
+  if (!sess) { main.innerHTML = UI.empty('🔒','Sign in to view saved items'); return; }
+  const favShops = CC.Favs.shops(sess.userId);
+  const favProds = CC.Favs.prods(sess.userId);
+  const tab = params.tab || 'shops';
+
+  main.innerHTML = `
+<div class="page-wrap">
+  <h1 class="page-title">Saved</h1>
+  <div class="shop-tabs">
+    <button class="shop-tab ${tab==='shops'?'active':''}" onclick="App.nav('favorites',{tab:'shops'})">Shops (${favShops.length})</button>
+    <button class="shop-tab ${tab==='products'?'active':''}" onclick="App.nav('favorites',{tab:'products'})">Products (${favProds.length})</button>
+  </div>
+  ${tab==='shops'
+    ? (favShops.length ? `<div class="shop-grid">${favShops.map(s=>UI.shopCard(s)).join('')}</div>` : UI.empty('♥','No saved shops','Browse shops and tap ♥ to save them.'))
+    : (favProds.length ? `<div class="product-grid">${favProds.map(p=>UI.productCard(p)).join('')}</div>` : UI.empty('♥','No saved products','Browse products and tap ♥ to save them.'))}
+</div>`;
+};
+
+// ── Login ─────────────────────────────────────────────────────
+Pages.login = function(main, sess, params) {
+  if (sess) { App.nav('home'); return; }
+  main.innerHTML = `
+<div class="auth-wrap">
+  <div class="auth-card">
+    <div class="auth-logo">🎓</div>
+    <h1 class="auth-title">Sign in to CampusConnect</h1>
+    <p class="auth-sub">Access your saved shops, leave reviews, and more.</p>
+    <form id="login-form" onsubmit="App.handleLogin(event)">
+      ${UI.field({id:'email',label:'Email',type:'email',placeholder:'you@college.edu',required:true})}
+      ${UI.field({id:'password',label:'Password',type:'password',placeholder:'Your password',required:true})}
+      <button class="btn btn-primary btn-full" type="submit">Sign In</button>
+    </form>
+    <p class="auth-switch">No account? <a href="#" onclick="App.nav('register')">Register as a student</a></p>
+    <p class="auth-switch">Running a shop? <a href="#" onclick="App.nav('register',{role:'provider'})">Register as a provider</a></p>
+    <div class="demo-creds">
+      <h4>Demo Credentials</h4>
+      <div class="demo-creds-grid">
+        <div><strong>Student:</strong> arjun@student.edu / student123</div>
+        <div><strong>Provider:</strong> print@campus.edu / print123</div>
+        <div><strong>Admin:</strong> admin@campus.edu / admin123</div>
+      </div>
+    </div>
+  </div>
+</div>`;
+};
+
+// ── Register ──────────────────────────────────────────────────
+Pages.register = function(main, sess, params) {
+  if (sess) { App.nav('home'); return; }
+  const role = params.tab || 'student';
+  main.innerHTML = `
+<div class="auth-wrap">
+  <div class="auth-card">
+    <div class="auth-logo">🎓</div>
+    <h1 class="auth-title">Create an Account</h1>
+    <div class="auth-role-tabs">
+      <button class="shop-tab ${role==='student'?'active':''}" onclick="App.nav('register',{tab:'student'})">Student</button>
+      <button class="shop-tab ${role==='provider'?'active':''}" onclick="App.nav('register',{tab:'provider'})">Shop/Service Provider</button>
+    </div>
+    <form id="reg-form" onsubmit="App.handleRegister(event,'${role}')">
+      ${UI.field({id:'name',label:role==='provider'?'Your Name':'Full Name',type:'text',placeholder:'Your name',required:true})}
+      ${UI.field({id:'email',label:'Email',type:'email',placeholder:'you@email.com',required:true})}
+      ${UI.field({id:'password',label:'Password',type:'password',placeholder:'Min. 6 characters',required:true})}
+      <button class="btn btn-primary btn-full" type="submit">Create Account</button>
+    </form>
+    <p class="auth-switch">Already have an account? <a href="#" onclick="App.nav('login')">Sign in</a></p>
+  </div>
+</div>`;
+};
+
+// ── Provider Dashboard ────────────────────────────────────────
+Pages.dashboard = function(main, sess, params) {
+  if (!sess || sess.role!=='provider') { App.nav('login'); return; }
+  const user  = CC.Auth.current();
+  const shop  = CC.Shops.byOwner(sess.userId);
+  const tab   = params.tab || (shop ? 'products' : 'setup');
+
+  if (!shop) {
+    App.nav('shop-setup');
+    return;
+  }
+
+  const products = CC.Products.byShop(shop.id);
+  const reviews  = CC.Reviews.byShop(shop.id);
+
+  main.innerHTML = `
+<div class="page-wrap">
+  <div class="dash-header">
+    <div>
+      <h1 class="page-title">${shop.name}</h1>
+      <div class="dash-status">
+        Status: <span class="status-badge status-${shop.status}">${shop.status.charAt(0).toUpperCase()+shop.status.slice(1)}</span>
+        · ${UI.stars(shop.rating||0)} ${shop.rating||'–'} · ${shop.reviewCount} reviews
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="App.nav('shop',{shopId:'${shop.id}'})">View Public Page →</button>
+  </div>
+
+  <div class="shop-tabs">
+    <button class="shop-tab ${tab==='products'?'active':''}" onclick="App.nav('dashboard',{tab:'products'})">Products & Services</button>
+    <button class="shop-tab ${tab==='reviews'?'active':''}" onclick="App.nav('dashboard',{tab:'reviews'})">Reviews</button>
+    <button class="shop-tab ${tab==='edit'?'active':''}" onclick="App.nav('dashboard',{tab:'edit'})">Edit Shop</button>
+  </div>
+
+  <div class="dash-tab-content">
+  ${tab==='products' ? `
+    <div class="dash-product-header">
+      <h2>Catalogue (${products.length})</h2>
+      <button class="btn btn-primary btn-sm" onclick="App.openAddProduct('${shop.id}')">+ Add Product/Service</button>
+    </div>
+    ${products.length ? `
+    <div class="dash-product-table-wrap">
+      <table class="dash-table">
+        <thead><tr><th>Name</th><th>Type</th><th>Category</th><th>Price</th><th>Availability</th><th>Actions</th></tr></thead>
+        <tbody>
+          ${products.map(p=>`
+          <tr>
+            <td><span style="margin-right:.5rem">${p.image||'📦'}</span><strong>${p.name}</strong></td>
+            <td><span class="type-badge">${p.type}</span></td>
+            <td>${p.category}</td>
+            <td>₹${p.price}${p.discount?` <span class="badge-discount">${p.discount}% off</span>`:''}</td>
+            <td>${UI.avail(p.availability)}</td>
+            <td class="action-cell">
+              <button class="btn btn-ghost btn-xs" onclick="App.openEditProduct('${p.id}')">Edit</button>
+              <button class="btn btn-danger btn-xs" onclick="App.deleteProduct('${p.id}')">Delete</button>
+            </td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>` : UI.empty('📦','No products yet','Add your first product or service.')}
+  ` : ''}
+
+  ${tab==='reviews' ? (reviews.length
+    ? reviews.map(r=>`
+      <div class="review-card">
+        <div class="review-header">
+          <span class="review-avatar">${r.userName[0]}</span>
+          <div><div class="review-name">${r.userName}</div><div>${UI.stars(r.rating)}</div></div>
+          <div class="review-date">${new Date(r.createdAt).toLocaleDateString()}</div>
+        </div>
+        <p class="review-text">${r.text}</p>
+      </div>`).join('')
+    : UI.empty('💬','No reviews yet','Your customers haven\'t left reviews yet.'))
+  : ''}
+
+  ${tab==='edit' ? `
+    <div class="edit-shop-form">
+      <form id="edit-shop-form" onsubmit="App.saveShopEdit(event,'${shop.id}')">
+        ${UI.field({id:'name',label:'Shop Name',value:shop.name,required:true})}
+        ${UI.field({id:'tagline',label:'Tagline',value:shop.tagline||'',placeholder:'Short catchy description'})}
+        ${UI.field({id:'description',label:'Description',value:shop.description||'',textarea:true})}
+        ${UI.field({id:'category',label:'Category',value:shop.category,options:CC.CATEGORIES.map(c=>c.name),required:true})}
+        ${UI.field({id:'address',label:'Address',value:shop.address,required:true})}
+        ${UI.field({id:'phone',label:'Phone',value:shop.phone})}
+        ${UI.field({id:'hours',label:'Opening Hours',value:shop.hours})}
+        ${UI.field({id:'image',label:'Shop Emoji/Icon',value:shop.image,placeholder:'e.g. 🏪'})}
+        <button class="btn btn-primary" type="submit">Save Changes</button>
+      </form>
+    </div>` : ''}
+  </div>
+</div>`;
+};
+
+// ── Shop Setup ────────────────────────────────────────────────
+Pages.shopSetup = function(main, sess, params) {
+  if (!sess || sess.role!=='provider') { App.nav('login'); return; }
+  main.innerHTML = `
+<div class="page-wrap auth-wrap">
+  <div class="auth-card" style="max-width:600px">
+    <div class="auth-logo">🏪</div>
+    <h1 class="auth-title">Set Up Your Shop</h1>
+    <p class="auth-sub">Your listing will be reviewed before going live. This usually takes less than a day.</p>
+    <form id="shop-setup-form" onsubmit="App.handleShopSetup(event)">
+      ${UI.field({id:'name',label:'Shop Name',required:true,placeholder:'e.g. My Stationery Store'})}
+      ${UI.field({id:'tagline',label:'Tagline',placeholder:'Short catchy description'})}
+      ${UI.field({id:'description',label:'Description',textarea:true,placeholder:'Describe what you offer…'})}
+      ${UI.field({id:'category',label:'Category',options:CC.CATEGORIES.map(c=>c.name),required:true})}
+      ${UI.field({id:'address',label:'Address',required:true,placeholder:'Shop number, street, area…'})}
+      ${UI.field({id:'phone',label:'Phone Number',placeholder:'+91 98765 00000'})}
+      ${UI.field({id:'hours',label:'Opening Hours',placeholder:'Mon–Sat 9 AM – 7 PM'})}
+      ${UI.field({id:'image',label:'Shop Icon (emoji)',placeholder:'🏪'})}
+      <button class="btn btn-primary btn-full" type="submit">Submit for Approval</button>
+    </form>
+  </div>
+</div>`;
+};
+
+// ── Admin ─────────────────────────────────────────────────────
+Pages.admin = function(main, sess, params) {
+  if (!sess || sess.role!=='admin') { App.nav('login'); return; }
+  const tab    = params.tab || 'overview';
+  const stats  = CC.Stats.get();
+  const shops  = CC.Shops.all();
+  const users  = (localStorage.getItem('cc_users')?JSON.parse(localStorage.getItem('cc_users')):[]);
+  const reports= CC.Reports.all();
+
+  main.innerHTML = `
+<div class="page-wrap">
+  <h1 class="page-title">Admin Dashboard</h1>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-num">${stats.students}</div><div class="stat-lbl">Students</div></div>
+    <div class="stat-card"><div class="stat-num">${stats.providers}</div><div class="stat-lbl">Providers</div></div>
+    <div class="stat-card"><div class="stat-num">${stats.shops}</div><div class="stat-lbl">Live Shops</div></div>
+    <div class="stat-card stat-alert"><div class="stat-num">${stats.pending}</div><div class="stat-lbl">Pending Approvals</div></div>
+    <div class="stat-card"><div class="stat-num">${stats.products}</div><div class="stat-lbl">Products</div></div>
+    <div class="stat-card stat-alert"><div class="stat-num">${stats.reports}</div><div class="stat-lbl">Open Reports</div></div>
+  </div>
+
+  <div class="shop-tabs">
+    <button class="shop-tab ${tab==='overview'?'active':''}" onclick="App.nav('admin',{tab:'overview'})">Shops</button>
+    <button class="shop-tab ${tab==='users'?'active':''}" onclick="App.nav('admin',{tab:'users'})">Users</button>
+    <button class="shop-tab ${tab==='reports'?'active':''}" onclick="App.nav('admin',{tab:'reports'})">Reports</button>
+  </div>
+
+  <div class="dash-tab-content">
+  ${tab==='overview' ? `
+    <table class="dash-table">
+      <thead><tr><th>Shop</th><th>Category</th><th>Owner</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        ${shops.map(s=>{
+          const owner=users.find(u=>u.id===s.ownerId);
+          return `<tr>
+            <td><strong>${s.name}</strong></td>
+            <td>${s.category}</td>
+            <td>${owner?.name||'–'}</td>
+            <td><span class="status-badge status-${s.status}">${s.status}</span></td>
+            <td class="action-cell">
+              <button class="btn btn-ghost btn-xs" onclick="App.openShop('${s.id}')">View</button>
+              ${s.status==='pending'?`<button class="btn btn-primary btn-xs" onclick="App.adminApprove('${s.id}')">Approve</button><button class="btn btn-danger btn-xs" onclick="App.adminReject('${s.id}')">Reject</button>`:''}
+              <button class="btn btn-danger btn-xs" onclick="App.adminDeleteShop('${s.id}')">Delete</button>
+            </td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>` : ''}
+
+  ${tab==='users' ? `
+    <table class="dash-table">
+      <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Since</th><th>Action</th></tr></thead>
+      <tbody>
+        ${users.filter(u=>u.role!=='admin').map(u=>`
+        <tr>
+          <td>${u.name}</td>
+          <td>${u.email}</td>
+          <td><span class="type-badge">${u.role}</span></td>
+          <td>${new Date(u.createdAt).toLocaleDateString()}</td>
+          <td><button class="btn btn-danger btn-xs" onclick="App.adminDeleteUser('${u.id}')">Remove</button></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>` : ''}
+
+  ${tab==='reports' ? (reports.length ? `
+    <table class="dash-table">
+      <thead><tr><th>Type</th><th>Detail</th><th>Reporter</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        ${reports.map(r=>`
+        <tr>
+          <td><strong>${r.type||'Report'}</strong></td>
+          <td>${r.detail||'–'}</td>
+          <td>${r.reporterName||'Anonymous'}</td>
+          <td><span class="status-badge status-${r.status}">${r.status}</span></td>
+          <td class="action-cell">
+            ${r.status==='pending'?`<button class="btn btn-primary btn-xs" onclick="App.adminResolveReport('${r.id}')">Resolve</button>`:''}
+            <button class="btn btn-danger btn-xs" onclick="App.adminDeleteReport('${r.id}')">Delete</button>
+          </td>
+        </tr>`).join('')}
+      </tbody>
+    </table>` : UI.empty('✓','No open reports','Everything is clear.'))
+  : ''}
+  </div>
+</div>`;
+};
+
+// ── Action Handlers ───────────────────────────────────────────
+App.handleLogin = function(e) {
+  e.preventDefault();
+  const email    = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const sess = CC.Auth.login(email, password);
+  if (!sess) { UI.toast('Invalid email or password','error'); return; }
+  UI.toast(`Welcome back, ${sess.name.split(' ')[0]}!`);
+  if (sess.role==='admin')    App.nav('admin');
+  else if (sess.role==='provider') App.nav('dashboard');
+  else App.nav('home');
+};
+
+App.handleRegister = function(e, role) {
+  e.preventDefault();
+  const name     = document.getElementById('name').value.trim();
+  const email    = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  if (password.length<6) { UI.toast('Password must be at least 6 characters','error'); return; }
+  const res = CC.Auth.register({ name, email, password, role });
+  if (res.error) { UI.toast(res.error,'error'); return; }
+  UI.toast('Account created! Welcome.');
+  if (role==='provider') App.nav('shop-setup');
+  else App.nav('home');
+};
+
+App.handleShopSetup = function(e) {
+  e.preventDefault();
+  const sess = CC.Auth.session();
+  if (!sess) return;
+  const f = UI.formData(e.target);
+  const shop = CC.Shops.create({
+    ownerId: sess.userId,
+    name: f.name, tagline: f.tagline, description: f.description,
+    category: f.category, address: f.address, phone: f.phone,
+    hours: f.hours, image: f.image||'🏪',
+    lat: 17.385 + (Math.random()-0.5)*0.01,
+    lng: 78.486 + (Math.random()-0.5)*0.01,
+    tags: [],
+  });
+  UI.toast('Shop submitted for approval!');
+  App.nav('dashboard');
+};
+
+App.saveShopEdit = function(e, shopId) {
+  e.preventDefault();
+  const f = UI.formData(e.target);
+  CC.Shops.update(shopId, {
+    name:f.name, tagline:f.tagline, description:f.description,
+    category:f.category, address:f.address, phone:f.phone,
+    hours:f.hours, image:f.image,
+  });
+  UI.toast('Shop updated!');
+  App.nav('dashboard', {tab:'products'});
+};
+
+App.openAddProduct = function(shopId) {
+  const id = UI.modal({
+    title: 'Add Product / Service', wide: true,
+    body: `
+      <form id="add-prod-form" onsubmit="App.submitAddProduct(event,'${shopId}','${id||'PLACEHOLDER'}')">
+        ${UI.field({id:'pname',label:'Name',required:true,placeholder:'e.g. Record Book'})}
+        ${UI.field({id:'ptype',label:'Type',options:['product','service'],required:true})}
+        ${UI.field({id:'pcategory',label:'Category',options:CC.CATEGORIES.map(c=>c.name),required:true})}
+        ${UI.field({id:'pdescription',label:'Description',textarea:true})}
+        ${UI.field({id:'pprice',label:'Price (₹)',type:'number',required:true,min:0,step:0.5})}
+        ${UI.field({id:'punit',label:'Unit (e.g. per page, each, pack)',placeholder:'each'})}
+        ${UI.field({id:'pdiscount',label:'Discount (%)',type:'number',min:0,max:100,step:1})}
+        ${UI.field({id:'pavailability',label:'Availability',options:Object.keys(CC.AVAILABILITY_LABELS),required:true})}
+        ${UI.field({id:'pimage',label:'Icon (emoji)',placeholder:'📦'})}
+        <button class="btn btn-primary" type="submit">Add</button>
+      </form>`,
+  });
+  // Fix the modal id in form submit
+  setTimeout(()=>{
+    const form = document.getElementById('add-prod-form');
+    if (form) form.onsubmit = (e)=>App.submitAddProduct(e, shopId, id);
+  },30);
+};
+
+App.submitAddProduct = function(e, shopId, modalId) {
+  e.preventDefault();
+  const f = UI.formData(e.target);
+  CC.Products.create({
+    shopId,
+    name:f.pname, type:f.ptype, category:f.pcategory,
+    description:f.pdescription, price:+f.pprice, unit:f.punit,
+    discount:+f.pdiscount||0, availability:f.pavailability,
+    image:f.pimage||'📦', tags:[],
+  });
+  UI.closeModal(modalId);
+  UI.toast('Product added!');
+  App.nav('dashboard',{tab:'products'});
+};
+
+App.openEditProduct = function(productId) {
+  const p = CC.Products.byId(productId);
+  if (!p) return;
+  const id = UI.modal({
+    title: 'Edit Product', wide: true,
+    body: `
+      <form id="edit-prod-form">
+        ${UI.field({id:'pname',label:'Name',value:p.name,required:true})}
+        ${UI.field({id:'pcategory',label:'Category',value:p.category,options:CC.CATEGORIES.map(c=>c.name)})}
+        ${UI.field({id:'pdescription',label:'Description',value:p.description||'',textarea:true})}
+        ${UI.field({id:'pprice',label:'Price (₹)',type:'number',value:p.price,min:0})}
+        ${UI.field({id:'punit',label:'Unit',value:p.unit||''})}
+        ${UI.field({id:'pdiscount',label:'Discount (%)',type:'number',value:p.discount||0,min:0,max:100})}
+        ${UI.field({id:'pavailability',label:'Availability',value:p.availability,options:Object.keys(CC.AVAILABILITY_LABELS)})}
+        ${UI.field({id:'pimage',label:'Icon',value:p.image||''})}
+        <button class="btn btn-primary" type="button" id="save-edit-prod-btn">Save Changes</button>
+      </form>`,
+  });
+  setTimeout(()=>{
+    const btn=document.getElementById('save-edit-prod-btn');
+    if(btn) btn.onclick=()=>{
+      const f=UI.formData(document.getElementById('edit-prod-form'));
+      CC.Products.update(productId,{
+        name:f.pname,category:f.pcategory,description:f.pdescription,
+        price:+f.pprice,unit:f.punit,discount:+f.pdiscount||0,
+        availability:f.pavailability,image:f.pimage||p.image,
+      });
+      UI.closeModal(id);
+      UI.toast('Product updated!');
+      App.nav('dashboard',{tab:'products'});
+    };
+  },30);
+};
+
+App.deleteProduct = function(id) {
+  UI.confirm('Delete this product? This cannot be undone.', ()=>{
+    CC.Products.delete(id);
+    UI.toast('Product deleted');
+    App.nav('dashboard',{tab:'products'});
+  }, true);
+};
+
+App.pickStar = function(n) {
+  document.getElementById('review-rating').value = n;
+  document.querySelectorAll('.star-pick').forEach((s,i)=>{
+    s.textContent = i<n ? '★' : '☆';
+    s.classList.toggle('star-picked', i<n);
+  });
+};
+
+App.submitReview = function(e, shopId) {
+  e.preventDefault();
+  const sess   = CC.Auth.session();
+  const rating = +document.getElementById('review-rating').value;
+  const text   = document.getElementById('review-text').value.trim();
+  if (!rating) { UI.toast('Please pick a star rating','error'); return; }
+  CC.Reviews.add({ shopId, userId:sess.userId, userName:sess.name, rating, text });
+  UI.toast('Review submitted!');
+  App.nav('shop',{shopId,tab:'reviews'});
+};
+
+App.deleteReview = function(id, shopId) {
+  UI.confirm('Delete your review?', ()=>{
+    CC.Reviews.delete(id);
+    UI.toast('Review deleted');
+    App.nav('shop',{shopId,tab:'reviews'});
+  }, true);
+};
+
+App.adminApprove = function(id) {
+  CC.Shops.approve(id);
+  UI.toast('Shop approved!');
+  App.nav('admin',{tab:'overview'});
+};
+App.adminReject = function(id) {
+  CC.Shops.reject(id);
+  UI.toast('Shop rejected');
+  App.nav('admin',{tab:'overview'});
+};
+App.adminDeleteShop = function(id) {
+  UI.confirm('Permanently delete this shop and all its products?', ()=>{
+    CC.Shops.delete(id);
+    UI.toast('Shop deleted');
+    App.nav('admin',{tab:'overview'});
+  }, true);
+};
+App.adminDeleteUser = function(id) {
+  UI.confirm('Remove this user?', ()=>{
+    const users = JSON.parse(localStorage.getItem('cc_users')||'[]').filter(u=>u.id!==id);
+    localStorage.setItem('cc_users', JSON.stringify(users));
+    UI.toast('User removed');
+    App.nav('admin',{tab:'users'});
+  }, true);
+};
+App.adminResolveReport = function(id) {
+  CC.Reports.resolve(id);
+  UI.toast('Report resolved');
+  App.nav('admin',{tab:'reports'});
+};
+App.adminDeleteReport = function(id) {
+  CC.Reports.delete(id);
+  UI.toast('Report deleted');
+  App.nav('admin',{tab:'reports'});
+};
+
+// Start
+window.addEventListener('DOMContentLoaded', App.init);
+
+</script>
 </body>
 </html>
